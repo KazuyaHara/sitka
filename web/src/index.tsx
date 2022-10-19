@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // eslint-disable-line import/no-unresolved
 
-import './index.css';
-import App from './App';
+import UserInterface from './adapters/userInterface';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <UserInterface />
   </React.StrictMode>
 );
 

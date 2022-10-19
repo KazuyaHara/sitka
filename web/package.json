@@ -14,6 +14,9 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.10",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -54,7 +57,7 @@
     "deploy:prd": "yarn build:prd && firebase use production && firebase deploy --only hosting && firebase use default",
     "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy --only hosting && firebase use default",
     "eject": "react-scripts eject",
-    "eslint": "eslint src/*.{ts,tsx}",
+    "eslint": "eslint src/**/*.{ts,tsx}",
     "start": "react-scripts start",
     "test": "react-scripts test"
   }
