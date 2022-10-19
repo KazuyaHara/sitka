@@ -28,3 +28,32 @@ jobs:
 
       - name: 📝 Run test
         run: yarn test
+
+  preview:
+    name: Preview on staging environment
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: 📝 Update web version
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './web/package.json'
+        env:
+          version: '${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion }}'
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 📦 Build app
+        run: yarn build:stg
+
+      - name: 🚀 Deploy Firebase
+        run: |
+          npm i -g firebase-tools
+          firebase deploy --project staging --token ${{ secrets.FIREBASE_TOKEN }} --force
