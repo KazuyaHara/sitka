@@ -73,9 +73,11 @@
   "repository": "https://github.com/KazuyaHara/sitka",
   "scripts": {
     "commit": "npx cz",
+    "eslint": "yarn workspaces run eslint",
     "prepare": "husky install",
     "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
-    "prettier:web": "prettier -w web/*.json web/src/*.{ts,tsx}"
+    "prettier:web": "prettier -w web/*.json web/src/*.{ts,tsx}",
+    "web": "yarn workspace web"
   },
   "workspaces": {
     "packages": [
