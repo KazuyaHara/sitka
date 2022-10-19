@@ -3,6 +3,26 @@
   "description": "A gateway to the Glacier.",
   "version": "0.0.0",
   "author": "Kazuya Hara <iam@kazuyahara.dev>",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^7.0.0"
+  },
   "private": true,
-  "repository": "https://github.com/KazuyaHara/sitka"
+  "repository": "https://github.com/KazuyaHara/sitka",
+  "scripts": {
+    "commit": "npx cz",
+    "prepare": "husky install"
+  }
 }
