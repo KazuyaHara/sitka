@@ -12,3 +12,19 @@ jobs:
         uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    name: Test PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 📝 Test
+        run: yarn test
