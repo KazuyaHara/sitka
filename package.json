@@ -72,6 +72,6 @@
   "scripts": {
     "commit": "npx cz",
     "prepare": "husky install",
-    "prettier": "prettier -w package.json README.md"
+    "prettier": "prettier -w .github/**/*.yml package.json README.md"
   }
 }
