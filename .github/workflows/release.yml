@@ -13,7 +13,7 @@ jobs:
       nextVersion: ${{ steps.release.outputs.version }}
     steps:
       - name: 🏗 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 🏗 Setup Node
         uses: ./.github/actions/setup-node
@@ -22,8 +22,8 @@ jobs:
         id: current
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: "package.json"
-          prop_path: "version"
+          path: 'package.json'
+          prop_path: 'version'
 
       - name: 📦 Install dependencies
         run: yarn install

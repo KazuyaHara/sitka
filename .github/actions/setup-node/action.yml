@@ -1,10 +1,10 @@
 name: Setup Node
 description: Composite action for setup-node
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: 🏗 Setup Node v16.18.0
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: "v16.18.0"
-        cache: "yarn"
+        node-version: 'v16.18.0'
+        cache: 'yarn'
