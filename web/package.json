@@ -47,7 +47,12 @@
   },
   "private": true,
   "scripts": {
-    "build": "react-scripts build",
+    "build:dev": "react-scripts build",
+    "build:prd": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build:stg": "react-scripts build",
+    "deploy:dev": "yarn build:dev && firebase use default && firebase deploy --only hosting",
+    "deploy:prd": "yarn build:prd && firebase use production && firebase deploy --only hosting && firebase use default",
+    "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy --only hosting && firebase use default",
     "eject": "react-scripts eject",
     "eslint": "eslint src/*.{ts,tsx}",
     "start": "react-scripts start",

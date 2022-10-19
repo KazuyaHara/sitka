@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "sitka-dev",
+    "staging": "sitka-stg",
+    "production": "sitka-prd"
+  },
+  "targets": {},
+  "etags": {}
+}
