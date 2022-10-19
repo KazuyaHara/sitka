@@ -45,7 +45,7 @@ jobs:
         with:
           files: './web/package.json'
         env:
-          version: '${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion }}'
+          version: "${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion || '0.0.0' }}"
 
       - name: 📦 Install dependencies
         run: yarn install
