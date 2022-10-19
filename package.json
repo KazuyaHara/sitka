@@ -22,6 +22,7 @@
     "@semantic-release/git": "^10.0.1",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^7.0.0",
+    "prettier": "^2.7.1",
     "semantic-release": "^19.0.5"
   },
   "private": true,
@@ -70,6 +71,7 @@
   "repository": "https://github.com/KazuyaHara/sitka",
   "scripts": {
     "commit": "npx cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prettier": "prettier -w package.json README.md"
   }
 }
