@@ -1,0 +1,35 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release new version
+    runs-on: ubuntu-latest
+    outputs:
+      currentVersion: ${{ steps.current.outputs.prop }}
+      nextVersion: ${{ steps.release.outputs.version }}
+    steps:
+      - name: 🏗 Checkout
+        uses: actions/checkout@v2
+
+      - name: 🏗 Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: 📝 Get current version
+        id: current
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🚀 Release
+        id: release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
