@@ -42,7 +42,8 @@
           "replacements": [
             {
               "files": [
-                "package.json"
+                "package.json",
+                "web/package.json"
               ],
               "from": "\"version\": \".*\"",
               "to": "\"version\": \"${nextRelease.version}\""
@@ -55,7 +56,8 @@
         {
           "assets": [
             "CHANGELOG.md",
-            "package.json"
+            "package.json",
+            "web/package.json"
           ],
           "message": "chore(release): ${nextRelease.gitTag} [skip ci]"
         }
@@ -71,7 +73,19 @@
   "repository": "https://github.com/KazuyaHara/sitka",
   "scripts": {
     "commit": "npx cz",
+    "eslint": "yarn workspaces run eslint",
     "prepare": "husky install",
-    "prettier": "prettier -w .github/**/*.yml package.json README.md"
+    "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
+    "prettier:web": "prettier -w web/*.json web/src/*.{ts,tsx}",
+    "test": "yarn workspaces run test",
+    "web": "yarn workspace web"
+  },
+  "workspaces": {
+    "packages": [
+      "web"
+    ],
+    "nohoist": [
+      "web/**"
+    ]
   }
 }
