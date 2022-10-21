@@ -32,6 +32,8 @@
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
     ],
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "no-unused-vars": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }],
     "react/require-default-props": [

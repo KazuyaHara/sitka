@@ -26,13 +26,15 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "firebase": "^9.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.38.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^4.1.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.40.1",
@@ -54,9 +56,9 @@
   },
   "private": true,
   "scripts": {
-    "build:dev": "react-scripts build",
-    "build:prd": "GENERATE_SOURCEMAP=false react-scripts build",
-    "build:stg": "react-scripts build",
+    "build:dev": "cp .env.development .env.production.local && react-scripts build",
+    "build:prd": "cp .env.production .env.production.local && GENERATE_SOURCEMAP=false react-scripts build",
+    "build:stg": "cp .env.staging .env.production.local && react-scripts build",
     "deploy:dev": "yarn build:dev && firebase use default && firebase deploy --only hosting",
     "deploy:prd": "yarn build:prd && firebase use production && firebase deploy --only hosting && firebase use default",
     "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy --only hosting && firebase use default",
