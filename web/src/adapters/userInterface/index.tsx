@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 
+import { BrowserRouter } from 'react-router-dom';
+
 import useUserUseCase from '../../application/useCases/user';
 import { TUser } from '../../domains/user';
 import userRepository from '../repositories/user';
 import { useAuthStore } from '../stores/authentication';
 
-import Loading from './components/pages/loading';
 import Routes from './routes';
 import ThemeProvider from './theme';
 
 export default function UserInterface() {
-  const { initializing } = useAuthStore();
   const { subscribe } = useUserUseCase(userRepository());
 
   useEffect(() => {
@@ -20,5 +20,11 @@ export default function UserInterface() {
     return () => unsubscribe();
   }, []);
 
-  return <ThemeProvider>{initializing ? <Loading /> : <Routes />}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }

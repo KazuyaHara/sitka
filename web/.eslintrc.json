@@ -25,7 +25,7 @@
         "pathGroups": [
           {
             "group": "builtin",
-            "pattern": "{react,react-dom/**,react-router-dom}",
+            "pattern": "{react,react-dom/**}",
             "position": "before"
           }
         ],
