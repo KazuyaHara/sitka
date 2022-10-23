@@ -12,9 +12,9 @@ import Form, { Submit } from '../../organisms/form/auth/signin';
 
 export default function Landing() {
   const height = use100vh();
-  const { signIn } = useUserUseCase(userRepository());
   const [loading] = useState(false);
   const [alertOptions, setAlertOptions] = useState<AlertProps['options']>();
+  const { signIn } = useUserUseCase(userRepository());
 
   const onSubmit = async ({ email, password }: Submit) => {
     await signIn(email, password).catch(({ message }: Error) =>

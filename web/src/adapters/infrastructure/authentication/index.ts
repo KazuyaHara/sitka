@@ -2,6 +2,7 @@ import {
   AuthError,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut as FirebaseSignOut,
   Unsubscribe,
   User,
   UserCredential,
@@ -11,6 +12,7 @@ import Firebase from '../firebase';
 
 export interface IAuthenticationDriver {
   signIn(email: string, password: string): Promise<UserCredential | Error>;
+  signOut(): Promise<Error | void>;
   subscribe(nextOrObserver: (user: User | null) => void): Unsubscribe;
 }
 
@@ -54,8 +56,10 @@ export default function authenticationDriver(): IAuthenticationDriver {
   const signIn = async (email: string, password: string) =>
     signInWithEmailAndPassword(Firebase.instance.auth, email, password).catch(handleError);
 
+  const signOut = async () => FirebaseSignOut(Firebase.instance.auth).catch(handleError);
+
   const subscribe = (nextOrObserver: (user: User | null) => void) =>
     onAuthStateChanged(Firebase.instance.auth, nextOrObserver);
 
-  return { signIn, subscribe };
+  return { signIn, signOut, subscribe };
 }

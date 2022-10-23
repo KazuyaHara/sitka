@@ -7,8 +7,12 @@ export default function userRepository(): IUserUseCase {
     await authenticationDriver().signIn(email, password);
   };
 
+  const signOut = async () => {
+    await authenticationDriver().signOut();
+  };
+
   const subscribe = (nextOrObserver: (authid: TUser['authid']) => void) =>
     authenticationDriver().subscribe((user) => nextOrObserver(user?.uid ?? null));
 
-  return { signIn, subscribe };
+  return { signIn, signOut, subscribe };
 }
