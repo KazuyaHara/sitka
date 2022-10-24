@@ -3,6 +3,10 @@ import { IUserUseCase } from '../../../interface/useCase/user';
 import authenticationDriver from '../../infrastructure/authentication';
 
 export default function userRepository(): IUserUseCase {
+  const sendPasswordResetEmail = async (email: string) => {
+    await authenticationDriver().sendPasswordResetEmail(email);
+  };
+
   const signIn = async (email: string, password: string) => {
     await authenticationDriver().signIn(email, password);
   };
@@ -14,5 +18,5 @@ export default function userRepository(): IUserUseCase {
   const subscribe = (nextOrObserver: (authid: TUser['authid']) => void) =>
     authenticationDriver().subscribe((user) => nextOrObserver(user?.uid ?? null));
 
-  return { signIn, signOut, subscribe };
+  return { sendPasswordResetEmail, signIn, signOut, subscribe };
 }
