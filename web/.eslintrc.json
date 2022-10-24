@@ -15,6 +15,7 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": ["error"],
     "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
     "import/order": [
       "error",
@@ -24,14 +25,21 @@
         "pathGroups": [
           {
             "group": "builtin",
-            "pattern": "{react,react-dom/**,react-router-dom}",
+            "pattern": "{react,react-dom/**}",
             "position": "before"
           }
         ],
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
     ],
-    "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }]
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "no-unused-vars": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }],
+    "react/require-default-props": [
+      "error",
+      { "forbidDefaultForRequired": false, "ignoreFunctionalComponents": true }
+    ]
   },
   "settings": { "import/resolver": { "node": { "extensions": [".ts", ".tsx"] } } }
 }
