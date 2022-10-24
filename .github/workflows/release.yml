@@ -51,6 +51,10 @@ jobs:
         env:
           version: "${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion || '0.0.0' }}"
 
+      - name: 📝 Create dotenv file
+        run: echo ${{ secrets.DOTENV_PRD }} | base64 --decode > .env.production
+        working-directory: web
+
       - name: 📦 Install dependencies
         run: yarn install
 

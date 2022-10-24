@@ -13,25 +13,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  test:
-    name: Test PR
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🏗 Checkout
-        uses: actions/checkout@v3
+  # test:
+  #   name: Test PR
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 🏗 Checkout
+  #       uses: actions/checkout@v3
 
-      - name: 🏗 Setup Node
-        uses: ./.github/actions/setup-node
+  #     - name: 🏗 Setup Node
+  #       uses: ./.github/actions/setup-node
 
-      - name: 📦 Install dependencies
-        run: yarn install
+  #     - name: 📦 Install dependencies
+  #       run: yarn install
 
-      - name: 📝 Run test
-        run: yarn test
+  #     - name: 📝 Run test
+  #       run: yarn test
 
   preview:
     name: Preview on staging environment
-    needs: [lint, test]
+    needs: [lint]
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Checkout
@@ -46,6 +46,10 @@ jobs:
           files: './web/package.json'
         env:
           version: "${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion || '0.0.0' }}"
+
+      - name: 📝 Create dotenv file
+        run: echo ${{ secrets.DOTENV_STG }} | base64 --decode > .env.staging
+        working-directory: web
 
       - name: 📦 Install dependencies
         run: yarn install

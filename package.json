@@ -82,7 +82,7 @@
     "eslint": "yarn workspaces run eslint",
     "prepare": "husky install",
     "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
-    "prettier:web": "prettier -w web/*.json web/src/*.{ts,tsx}",
+    "prettier:web": "prettier -w web/*.json web/src/**/*.{ts,tsx}",
     "test": "yarn workspaces run test",
     "web": "yarn workspace web"
   },
