@@ -1,6 +1,7 @@
 import {
   AuthError,
   onAuthStateChanged,
+  sendPasswordResetEmail as FirebaseSendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut as FirebaseSignOut,
   Unsubscribe,
@@ -11,6 +12,7 @@ import {
 import Firebase from '../firebase';
 
 export interface IAuthenticationDriver {
+  sendPasswordResetEmail(email: string): Promise<Error | void>;
   signIn(email: string, password: string): Promise<UserCredential | Error>;
   signOut(): Promise<Error | void>;
   subscribe(nextOrObserver: (user: User | null) => void): Unsubscribe;
@@ -53,6 +55,9 @@ export default function authenticationDriver(): IAuthenticationDriver {
     }
   };
 
+  const sendPasswordResetEmail = async (email: string) =>
+    FirebaseSendPasswordResetEmail(Firebase.instance.auth, email).catch(handleError);
+
   const signIn = async (email: string, password: string) =>
     signInWithEmailAndPassword(Firebase.instance.auth, email, password).catch(handleError);
 
@@ -61,5 +66,5 @@ export default function authenticationDriver(): IAuthenticationDriver {
   const subscribe = (nextOrObserver: (user: User | null) => void) =>
     onAuthStateChanged(Firebase.instance.auth, nextOrObserver);
 
-  return { signIn, signOut, subscribe };
+  return { sendPasswordResetEmail, signIn, signOut, subscribe };
 }
