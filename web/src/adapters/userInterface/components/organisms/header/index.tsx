@@ -5,9 +5,9 @@ import { AppBar, Box, Button, Container, IconButton, Toolbar } from '@mui/materi
 
 import Logo from '../../../assets/logo/black.png';
 
-type Props = { handleSignOut: () => void };
+type Props = { handleDrawerOpen: () => void; handleSignOut: () => void };
 
-export default function Header({ handleSignOut }: Props) {
+export default function Header({ handleDrawerOpen, handleSignOut }: Props) {
   return (
     <AppBar color="secondary" position="static" sx={{ boxShadow: '0 0 64px 0 rgba(0, 0, 0, .15)' }}>
       <Container maxWidth="xl">
@@ -16,8 +16,8 @@ export default function Header({ handleSignOut }: Props) {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             aria-label="account of current user"
-            // onClick={handleOpenNavMenu}
             color="primary"
+            onClick={handleDrawerOpen}
             size="large"
             sx={{ display: { xs: 'flex', md: 'none' } }}
           >
