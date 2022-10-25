@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/KazuyaHara/sitka/compare/v0.1.0...v0.2.0) (2022-10-25)
+
+
+### Features
+
+* layout ([#13](https://github.com/KazuyaHara/sitka/issues/13)) ([d9e019e](https://github.com/KazuyaHara/sitka/commit/d9e019e337c6790b9dd454d33fca2ada901abe70))
+
 # [0.1.0](https://github.com/KazuyaHara/sitka/compare/v0.0.0...v0.1.0) (2022-10-24)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "sitka",
   "description": "A gateway to the Glacier.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Kazuya Hara <iam@kazuyahara.dev>",
   "commitlint": {
     "extends": [
