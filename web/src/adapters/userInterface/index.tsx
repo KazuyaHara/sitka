@@ -5,12 +5,15 @@ import { BrowserRouter } from 'react-router-dom';
 import useUserUseCase from '../../application/useCases/user';
 import { TUser } from '../../domains/user';
 import userRepository from '../repositories/user';
+import { useAlertStore } from '../stores/alert';
 import { useAuthStore } from '../stores/authentication';
 
+import Alert from './components/atoms/alert';
 import Routes from './routes';
 import ThemeProvider from './theme';
 
 export default function UserInterface() {
+  const { message, open, severity } = useAlertStore();
   const { subscribe } = useUserUseCase(userRepository());
 
   useEffect(() => {
@@ -23,6 +26,12 @@ export default function UserInterface() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <Alert
+          onClose={() => useAlertStore.setState({ open: false })}
+          message={message}
+          open={open}
+          severity={severity}
+        />
         <Routes />
       </BrowserRouter>
     </ThemeProvider>

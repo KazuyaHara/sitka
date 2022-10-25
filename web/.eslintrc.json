@@ -35,6 +35,10 @@
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "no-unused-vars": "off",
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": ["arrow-function", "function-declaration"] }
+    ],
     "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }],
     "react/require-default-props": [
       "error",
