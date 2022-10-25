@@ -1,11 +1,11 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 import { Container, Grid } from '@mui/material';
 
 import useUserUseCase from '../../../application/useCases/user';
 import userRepository from '../../repositories/user';
+import { useAlertStore } from '../../stores/alert';
 import { useAuthStore } from '../../stores/authentication';
-import Alert, { AlertProps } from '../components/atoms/alert';
 import { DrawerContent } from '../components/organisms/drawer';
 import Header from '../components/organisms/header';
 import Loading from '../components/pages/loading';
@@ -33,17 +33,17 @@ const Layout = ({ children, handleSignOut }: LayoutProps) => (
 
 export default function Routes() {
   const { authid, initializing } = useAuthStore();
-  const [alertOptions, setAlertOptions] = useState<AlertProps['options']>();
   const { signOut } = useUserUseCase(userRepository());
 
   const handleSignOut = async () => {
-    await signOut().catch(({ message }: Error) => setAlertOptions({ message, severity: 'error' }));
+    await signOut().catch(({ message }: Error) =>
+      useAlertStore.setState({ message, open: true, severity: 'error' })
+    );
   };
 
   if (initializing) return <Loading />;
   return authid ? (
     <Layout handleSignOut={handleSignOut}>
-      <Alert onClose={() => setAlertOptions(undefined)} options={alertOptions} />
       <AuthenticatedRoutes />
     </Layout>
   ) : (
