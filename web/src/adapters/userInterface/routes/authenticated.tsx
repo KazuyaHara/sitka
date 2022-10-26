@@ -1,11 +1,21 @@
 import React from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Navigate, useRoutes } from 'react-router-dom';
+
+import GearList from '../components/pages/gear/list';
+import MediaList from '../components/pages/media/list';
 
 export default function Authenticated() {
   return (
-    <Box>
-      <Typography>signed in.</Typography>
-    </Box>
+    useRoutes([
+      {
+        path: '/',
+        children: [
+          { path: '/gears', element: <GearList /> },
+          { path: '/media', element: <MediaList /> },
+          { path: '*', element: <Navigate to="/media" replace /> },
+        ],
+      },
+    ]) || <MediaList />
   );
 }
