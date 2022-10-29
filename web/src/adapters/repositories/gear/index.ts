@@ -1,20 +1,11 @@
 import { Gear } from '../../../domains/gear';
-import { IGearUseCase } from '../../../interface/useCase/gear';
+import { IGearRepository } from '../../../interface/repository/gear';
 import gearDriver from '../../infrastructure/gear';
 
-export default function gearRepository(): IGearUseCase {
+export default function gearRepository(): IGearRepository {
   const create = async (data: Gear) => {
     await gearDriver().create(data);
   };
-
-  const get = async (id: string) =>
-    gearDriver()
-      .get(id)
-      .then((doc) => {
-        if (!doc.exists()) return null;
-        const data = doc.data();
-        return new Gear({ id: doc.id, maker: data.maker, name: data.name, type: data.type });
-      });
 
   const list = async () =>
     gearDriver()
@@ -26,5 +17,9 @@ export default function gearRepository(): IGearUseCase {
         })
       );
 
-  return { create, get, list };
+  const update = async (data: Gear) => {
+    await gearDriver().update(data);
+  };
+
+  return { create, list, update };
 }

@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 type TGear = { id: string; maker: string; name: string; type: 'photo' | 'movie' };
+type Constructor = Omit<TGear, 'id'> & { id?: string };
 
 export class Gear {
   private _id: TGear['id'];
@@ -7,8 +8,8 @@ export class Gear {
   private _name: TGear['name'];
   private _type: TGear['type'];
 
-  constructor({ id, maker, name, type }: TGear) {
-    this._id = id;
+  constructor({ id, maker, name, type }: Constructor) {
+    this._id = id ?? '';
     this._maker = maker;
     this._name = name;
     this._type = type;

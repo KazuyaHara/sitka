@@ -1,15 +1,14 @@
 import { Gear } from '../../../domains/gear';
 import { IGearRepository } from '../../../interface/repository/gear';
-import { IGearUseCase } from '../../../interface/useCase/gear';
-
-export type CreateSubmit = Gear;
+import { GearSubmit, IGearUseCase } from '../../../interface/useCase/gear';
 
 export default function useGearUseCase(userRepository: IGearRepository): IGearUseCase {
-  const create = async (data: CreateSubmit) => userRepository.create(data);
-
-  const get = async (id: string) => userRepository.get(id);
+  const create = async (data: GearSubmit) => userRepository.create(new Gear(data));
 
   const list = async () => userRepository.list();
 
-  return { create, get, list };
+  const update = async (id: string, data: GearSubmit) =>
+    userRepository.update(new Gear({ id, ...data }));
+
+  return { create, list, update };
 }

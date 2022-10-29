@@ -7,28 +7,29 @@ import { Autocomplete, Box, BoxProps, Grid, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { CreateSubmit } from '../../../../../../application/useCases/gear';
 import { Gear } from '../../../../../../domains/gear';
+import { GearSubmit } from '../../../../../../interface/useCase/gear';
 
 type Props = {
-  gears: Gear[];
+  data?: Gear;
   loading: boolean;
-  onSubmit: (data: CreateSubmit) => void;
+  onSubmit: (data: GearSubmit) => void;
+  options: Gear[];
   sx?: BoxProps['sx'];
 };
 
-const options = [
+const types = [
   { label: '写真', value: 'photo' },
   { label: '動画', value: 'movie' },
 ];
 
-export default function GearForm({ gears, loading, onSubmit, sx }: Props) {
+export default function GearForm({ data, loading, onSubmit, options, sx }: Props) {
   const schema = yup.object().shape({
     maker: yup.string().required('メーカーを入力して下さい'),
     name: yup
       .string()
       .notOneOf(
-        gears.map(({ name }) => name),
+        options.filter(({ name }) => name !== data?.name).map(({ name }) => name),
         'この機種名は既に登録されています'
       )
       .required('機種名を入力して下さい'),
@@ -39,7 +40,15 @@ export default function GearForm({ gears, loading, onSubmit, sx }: Props) {
     formState: { errors },
     handleSubmit,
     register,
-  } = useForm<CreateSubmit>({ mode: 'onBlur', resolver: yupResolver(schema) });
+  } = useForm<GearSubmit>({
+    defaultValues: {
+      maker: data?.maker ?? '',
+      name: data?.name ?? '',
+      type: data?.type ?? 'photo',
+    },
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={sx}>
@@ -47,19 +56,24 @@ export default function GearForm({ gears, loading, onSubmit, sx }: Props) {
         <Grid item xs={12} sm={6}>
           <Autocomplete
             freeSolo
-            options={gears.map((option) => option.maker)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                {...register('maker')}
-                error={Boolean(errors.maker)}
-                fullWidth
-                helperText={errors.maker?.message}
-                inputProps={{ ...params.inputProps, maxLength: 50 }}
-                label="メーカー"
-                name="maker"
-              />
-            )}
+            options={options
+              .map((option) => option.maker)
+              .filter((maker, index, self) => self.indexOf(maker) === index)}
+            renderInput={(params) => {
+              const { value, ...inputProps } = params.inputProps; // eslint-disable-line @typescript-eslint/no-unused-vars
+              return (
+                <TextField
+                  {...params}
+                  {...register('maker')}
+                  error={Boolean(errors.maker)}
+                  fullWidth
+                  helperText={errors.maker?.message}
+                  inputProps={{ ...inputProps, maxLength: 50 }}
+                  label="メーカー"
+                  name="maker"
+                />
+              );
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -84,9 +98,9 @@ export default function GearForm({ gears, loading, onSubmit, sx }: Props) {
             select
             SelectProps={{ native: true }}
           >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+            {types.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
               </option>
             ))}
           </TextField>

@@ -3,13 +3,12 @@ import {
   collection,
   doc,
   DocumentReference,
-  DocumentSnapshot,
   FirestoreError,
-  getDoc,
   getDocs,
   orderBy,
   query,
   QuerySnapshot,
+  setDoc,
   serverTimestamp,
 } from 'firebase/firestore';
 
@@ -17,9 +16,9 @@ import { Gear } from '../../../domains/gear';
 import Firebase from '../firebase';
 
 export interface IGearDriver {
-  create(data: Gear): Promise<Error | DocumentReference>;
-  get(id: string): Promise<DocumentSnapshot>;
+  create(data: Gear): Promise<DocumentReference>;
   list(): Promise<QuerySnapshot>;
+  update(data: Gear): Promise<void>;
 }
 
 export default function gearDriver(): IGearDriver {
@@ -49,15 +48,24 @@ export default function gearDriver(): IGearDriver {
       throw handleError(error);
     });
 
-  const get = async (id: string) =>
-    getDoc(doc(gearsRef, id)).catch((error) => {
-      throw handleError(error);
-    });
-
   const list = async () =>
     getDocs(query(gearsRef, orderBy('maker'), orderBy('name'))).catch((error) => {
       throw handleError(error);
     });
 
-  return { create, get, list };
+  const update = async (data: Gear) =>
+    setDoc(
+      doc(gearsRef, data.id),
+      {
+        maker: data.maker,
+        name: data.name,
+        type: data.type,
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true }
+    ).catch((error) => {
+      throw handleError(error);
+    });
+
+  return { create, list, update };
 }
