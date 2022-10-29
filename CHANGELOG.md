@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/KazuyaHara/sitka/compare/v0.2.0...v0.3.0) (2022-10-29)
+
+
+### Features
+
+* manage gears ([#15](https://github.com/KazuyaHara/sitka/issues/15)) ([3ca8c59](https://github.com/KazuyaHara/sitka/commit/3ca8c596f0b3730292310affda5456df73980abe))
+
 # [0.2.0](https://github.com/KazuyaHara/sitka/compare/v0.1.0...v0.2.0) (2022-10-25)
 
 
