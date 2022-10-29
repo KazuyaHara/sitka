@@ -7,7 +7,7 @@ service cloud.firestore {
     }
 
     match /gears/{gearId} {
-      allow list, create: if authenticated();
+      allow read, create: if authenticated();
     }
   }
 }

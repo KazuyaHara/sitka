@@ -7,6 +7,15 @@ export default function gearRepository(): IGearUseCase {
     await gearDriver().create(data);
   };
 
+  const get = async (id: string) =>
+    gearDriver()
+      .get(id)
+      .then((doc) => {
+        if (!doc.exists()) return null;
+        const data = doc.data();
+        return new Gear({ id: doc.id, maker: data.maker, name: data.name, type: data.type });
+      });
+
   const list = async () =>
     gearDriver()
       .list()
@@ -17,5 +26,5 @@ export default function gearRepository(): IGearUseCase {
         })
       );
 
-  return { create, list };
+  return { create, get, list };
 }
