@@ -1,9 +1,11 @@
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
+import { Firestore, getFirestore } from 'firebase/firestore';
 
 export default class Firebase {
   private _app: FirebaseApp;
   private _auth: Auth;
+  private _firetore: Firestore;
   private static _instance: Firebase; // eslint-disable-line no-use-before-define
 
   private constructor() {
@@ -19,6 +21,7 @@ export default class Firebase {
 
     this._auth = getAuth(this._app);
     this._auth.languageCode = 'ja';
+    this._firetore = getFirestore(this._app);
   }
 
   public static get instance(): Firebase {
@@ -34,5 +37,11 @@ export default class Firebase {
     if (this._auth) return this._auth;
     this._auth = getAuth(this._app);
     return this._auth;
+  }
+
+  public get firetore(): Firestore {
+    if (this._firetore) return this._firetore;
+    this._firetore = getFirestore(this._app);
+    return this._firetore;
   }
 }
