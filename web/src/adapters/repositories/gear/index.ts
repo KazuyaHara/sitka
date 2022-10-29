@@ -7,6 +7,10 @@ export default function gearRepository(): IGearRepository {
     await gearDriver().create(data);
   };
 
+  const destroy = async (data: Gear) => {
+    await gearDriver().destroy(data);
+  };
+
   const list = async () =>
     gearDriver()
       .list()
@@ -21,5 +25,5 @@ export default function gearRepository(): IGearRepository {
     await gearDriver().update(data);
   };
 
-  return { create, list, update };
+  return { create, destroy, list, update };
 }
