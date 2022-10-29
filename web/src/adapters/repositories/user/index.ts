@@ -1,4 +1,4 @@
-import { TUser } from '../../../domains/user';
+import { User } from '../../../domains/user';
 import { IUserUseCase } from '../../../interface/useCase/user';
 import authenticationDriver from '../../infrastructure/authentication';
 
@@ -15,7 +15,7 @@ export default function userRepository(): IUserUseCase {
     await authenticationDriver().signOut();
   };
 
-  const subscribe = (nextOrObserver: (authid: TUser['authid']) => void) =>
+  const subscribe = (nextOrObserver: (authid: User['authid']) => void) =>
     authenticationDriver().subscribe((user) => nextOrObserver(user?.uid ?? null));
 
   return { sendPasswordResetEmail, signIn, signOut, subscribe };
