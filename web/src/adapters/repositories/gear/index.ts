@@ -13,7 +13,7 @@ export default function gearRepository(): IGearUseCase {
       .then((querySnapshot) =>
         querySnapshot.docs.map((doc) => {
           const data = doc.data();
-          return new Gear({ maker: data.maker, name: data.name, type: data.type });
+          return new Gear({ id: doc.id, maker: data.maker, name: data.name, type: data.type });
         })
       );
 

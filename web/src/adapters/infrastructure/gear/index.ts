@@ -4,6 +4,8 @@ import {
   DocumentReference,
   FirestoreError,
   getDocs,
+  orderBy,
+  query,
   QuerySnapshot,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -44,7 +46,7 @@ export default function gearDriver(): IGearDriver {
     });
 
   const list = async () =>
-    getDocs(gearsRef).catch((error) => {
+    getDocs(query(gearsRef, orderBy('maker'), orderBy('name'))).catch((error) => {
       throw handleError(error);
     });
 
