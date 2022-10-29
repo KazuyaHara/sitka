@@ -12,9 +12,9 @@ import {
 import Firebase from '../firebase';
 
 export interface IAuthenticationDriver {
-  sendPasswordResetEmail(email: string): Promise<Error | void>;
-  signIn(email: string, password: string): Promise<UserCredential | Error>;
-  signOut(): Promise<Error | void>;
+  sendPasswordResetEmail(email: string): Promise<void>;
+  signIn(email: string, password: string): Promise<UserCredential>;
+  signOut(): Promise<void>;
   subscribe(nextOrObserver: (user: User | null) => void): Unsubscribe;
 }
 
@@ -23,45 +23,52 @@ export default function authenticationDriver(): IAuthenticationDriver {
     switch (error.code) {
       case 'auth/email-already-in-use':
       case 'auth/provider-already-linked':
-        throw new Error('このメールアドレスは既に登録されています');
+        return new Error('このメールアドレスは既に登録されています');
       case 'auth/invalid-credential':
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
       case 'auth/invalid-email':
-        throw new Error('メールアドレスを確認してください');
+        return new Error('メールアドレスを確認してください');
       case 'auth/invalid-user-token':
-        throw new Error('再ログインしてください');
+        return new Error('再ログインしてください');
       case 'auth/invalid-verification-code':
-        throw new Error('認証コードを確認してください');
+        return new Error('認証コードを確認してください');
       case 'auth/invalid-verification-id':
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
       case 'auth/operation-not-allowed':
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
       case 'auth/requires-recent-login':
-        throw new Error('再認証が必要です');
+        return new Error('再認証が必要です');
       case 'auth/user-disabled':
-        throw new Error('このアカウントは無効化されています');
+        return new Error('このアカウントは無効化されています');
       case 'auth/user-mismatch':
-        throw new Error('パスワードを確認してください');
+        return new Error('パスワードを確認してください');
       case 'auth/user-not-found':
-        throw new Error('このメールアドレスは登録されていません');
+        return new Error('このメールアドレスは登録されていません');
       case 'auth/user-token-expired':
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
       case 'auth/weak-password':
-        throw new Error('より安全なパスワードを設定してください');
+        return new Error('より安全なパスワードを設定してください');
       case 'auth/wrong-password':
-        throw new Error('パスワードを確認してください');
+        return new Error('パスワードを確認してください');
       default:
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
     }
   };
 
   const sendPasswordResetEmail = async (email: string) =>
-    FirebaseSendPasswordResetEmail(Firebase.instance.auth, email).catch(handleError);
+    FirebaseSendPasswordResetEmail(Firebase.instance.auth, email).catch((error) => {
+      throw handleError(error);
+    });
 
   const signIn = async (email: string, password: string) =>
-    signInWithEmailAndPassword(Firebase.instance.auth, email, password).catch(handleError);
+    signInWithEmailAndPassword(Firebase.instance.auth, email, password).catch((error) => {
+      throw handleError(error);
+    });
 
-  const signOut = async () => FirebaseSignOut(Firebase.instance.auth).catch(handleError);
+  const signOut = async () =>
+    FirebaseSignOut(Firebase.instance.auth).catch((error) => {
+      throw handleError(error);
+    });
 
   const subscribe = (nextOrObserver: (user: User | null) => void) =>
     onAuthStateChanged(Firebase.instance.auth, nextOrObserver);

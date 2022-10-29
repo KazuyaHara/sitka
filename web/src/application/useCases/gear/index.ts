@@ -7,5 +7,7 @@ export type CreateSubmit = Gear;
 export default function useGearUseCase(userRepository: IGearRepository): IGearUseCase {
   const create = async (data: CreateSubmit) => userRepository.create(data);
 
-  return { create };
+  const list = async () => userRepository.list();
+
+  return { create, list };
 }

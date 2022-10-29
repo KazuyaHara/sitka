@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,17 @@ import { Gear } from '../../../../../../domains/gear';
 import gearRepository from '../../../../../repositories/gear';
 import { useAlertStore } from '../../../../../stores/alert';
 import Form from '../../../organisms/form/gear';
+import Loading from '../../loading';
 
 export default function GearAdd() {
-  const { create: createGear } = useGearUseCase(gearRepository());
+  const { create: createGear, list: listGear } = useGearUseCase(gearRepository());
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [gears, setGears] = useState<Gear[]>();
+
+  useEffect(() => {
+    listGear().then(setGears);
+  }, []);
 
   const onSubmit = async (data: CreateSubmit) => {
     setLoading(true);
@@ -28,10 +34,11 @@ export default function GearAdd() {
       });
   };
 
+  if (typeof gears === 'undefined') return <Loading />;
   return (
     <Box mt={1.5}>
       <Typography variant="h2">機材を登録する</Typography>
-      <Form loading={loading} onSubmit={onSubmit} sx={{ mt: 3 }} />
+      <Form gears={gears} loading={loading} onSubmit={onSubmit} sx={{ mt: 3 }} />
     </Box>
   );
 }

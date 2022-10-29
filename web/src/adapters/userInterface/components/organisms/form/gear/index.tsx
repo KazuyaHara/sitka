@@ -3,25 +3,38 @@ import React from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, BoxProps, Grid, TextField } from '@mui/material';
+import { Autocomplete, Box, BoxProps, Grid, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { CreateSubmit } from '../../../../../../application/useCases/gear';
+import { Gear } from '../../../../../../domains/gear';
 
-type Props = { loading: boolean; onSubmit: (data: CreateSubmit) => void; sx?: BoxProps['sx'] };
+type Props = {
+  gears: Gear[];
+  loading: boolean;
+  onSubmit: (data: CreateSubmit) => void;
+  sx?: BoxProps['sx'];
+};
 
 const options = [
   { label: '写真', value: 'photo' },
   { label: '動画', value: 'movie' },
 ];
-const schema = yup.object().shape({
-  maker: yup.string().required('メーカーを入力して下さい'),
-  name: yup.string().required('機種名を入力して下さい'),
-  type: yup.string().required('種別を入力して下さい'),
-});
 
-export default function GearForm({ loading, onSubmit, sx }: Props) {
+export default function GearForm({ gears, loading, onSubmit, sx }: Props) {
+  const schema = yup.object().shape({
+    maker: yup.string().required('メーカーを入力して下さい'),
+    name: yup
+      .string()
+      .notOneOf(
+        gears.map(({ name }) => name),
+        'この機種名は既に登録されています'
+      )
+      .required('機種名を入力して下さい'),
+    type: yup.string().required('種別を入力して下さい'),
+  });
+
   const {
     formState: { errors },
     handleSubmit,
@@ -32,14 +45,21 @@ export default function GearForm({ loading, onSubmit, sx }: Props) {
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={sx}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <TextField
-            {...register('maker')}
-            error={Boolean(errors.maker)}
-            fullWidth
-            helperText={errors.maker?.message}
-            inputProps={{ maxLength: 50 }}
-            label="メーカー"
-            name="maker"
+          <Autocomplete
+            freeSolo
+            options={gears.map((option) => option.maker)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                {...register('maker')}
+                error={Boolean(errors.maker)}
+                fullWidth
+                helperText={errors.maker?.message}
+                inputProps={{ ...params.inputProps, maxLength: 50 }}
+                label="メーカー"
+                name="maker"
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

@@ -7,5 +7,15 @@ export default function gearRepository(): IGearUseCase {
     await gearDriver().create(data);
   };
 
-  return { create };
+  const list = async () =>
+    gearDriver()
+      .list()
+      .then((querySnapshot) =>
+        querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return new Gear({ maker: data.maker, name: data.name, type: data.type });
+        })
+      );
+
+  return { create, list };
 }

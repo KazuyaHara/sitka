@@ -3,6 +3,8 @@ import {
   collection,
   DocumentReference,
   FirestoreError,
+  getDocs,
+  QuerySnapshot,
   serverTimestamp,
 } from 'firebase/firestore';
 
@@ -11,32 +13,40 @@ import Firebase from '../firebase';
 
 export interface IGearDriver {
   create(data: Gear): Promise<Error | DocumentReference>;
+  list(): Promise<QuerySnapshot>;
 }
 
 export default function gearDriver(): IGearDriver {
+  const gearsRef = collection(Firebase.instance.firetore, 'gears');
+
   const handleError = (error: FirestoreError): Error => {
     switch (error.code) {
       case 'already-exists':
-        throw new Error('既に同じデータが存在しています');
+        return new Error('既に同じデータが存在しています');
       case 'not-found':
-        throw new Error('データが見つかりませんでした');
+        return new Error('データが見つかりませんでした');
       case 'permission-denied':
-        throw new Error('権限が不足しています');
+        return new Error('権限が不足しています');
       default:
-        throw new Error('エラーが発生しました');
+        return new Error('エラーが発生しました');
     }
   };
 
-  const create = async (data: Gear) => {
-    const gearsRef = collection(Firebase.instance.firetore, 'gears');
-    return addDoc(gearsRef, {
+  const create = async (data: Gear) =>
+    addDoc(gearsRef, {
       maker: data.maker,
       name: data.name,
       type: data.type,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    }).catch(handleError);
-  };
+    }).catch((error) => {
+      throw handleError(error);
+    });
 
-  return { create };
+  const list = async () =>
+    getDocs(gearsRef).catch((error) => {
+      throw handleError(error);
+    });
+
+  return { create, list };
 }
