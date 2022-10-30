@@ -87,6 +87,10 @@
     "test": "yarn workspaces run test",
     "web": "yarn workspace web"
   },
+  "volta": {
+    "node": "16.18.0",
+    "yarn": "3.2.4"
+  },
   "workspaces": {
     "packages": [
       "web"
