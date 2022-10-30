@@ -25,6 +25,7 @@
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.5"
   },
+  "packageManager": "yarn@3.2.4",
   "private": true,
   "release": {
     "branches": [
@@ -89,9 +90,6 @@
   "workspaces": {
     "packages": [
       "web"
-    ],
-    "nohoist": [
-      "web/**"
     ]
   }
 }
