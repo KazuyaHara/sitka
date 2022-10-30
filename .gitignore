@@ -8,6 +8,10 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 
+# yarn
+.yarn/cache
+.yarn/install-state.gz
+
 # Firebase
 .firebase
 firebase-debug.log
