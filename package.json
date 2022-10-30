@@ -11,18 +11,18 @@
     ]
   },
   "scripts": {
-    "build:dev": "yarn workspaces run build:dev",
-    "build:prd": "yarn workspaces run build:prd",
-    "build:stg": "yarn workspaces run build:stg",
+    "build:dev": "yarn workspaces foreach -p run build:dev",
+    "build:prd": "yarn workspaces foreach -p run build:prd",
+    "build:stg": "yarn workspaces foreach -p run build:stg",
     "commit": "npx cz",
     "deploy:dev": "yarn build:dev && firebase use default && firebase deploy",
     "deploy:prd": "yarn build:prd && firebase use production && firebase deploy && firebase use default",
     "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy && firebase use default",
-    "eslint": "yarn workspaces run eslint",
+    "eslint": "yarn workspaces foreach -p run eslint",
     "prepare": "husky install",
     "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
     "prettier:web": "prettier -w web/*.json web/src/**/*.{ts,tsx}",
-    "test": "yarn workspaces run test",
+    "test": "yarn workspaces foreach -p run test",
     "web": "yarn workspace web"
   },
   "commitlint": {
