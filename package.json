@@ -1,8 +1,30 @@
 {
   "name": "sitka",
-  "description": "A gateway to the Glacier.",
   "version": "0.3.0",
+  "private": true,
+  "description": "A gateway to the Glacier.",
+  "repository": "https://github.com/KazuyaHara/sitka",
   "author": "Kazuya Hara <iam@kazuyahara.dev>",
+  "workspaces": {
+    "packages": [
+      "web"
+    ]
+  },
+  "scripts": {
+    "build:dev": "yarn workspaces run build:dev",
+    "build:prd": "yarn workspaces run build:prd",
+    "build:stg": "yarn workspaces run build:stg",
+    "commit": "npx cz",
+    "deploy:dev": "yarn build:dev && firebase use default && firebase deploy",
+    "deploy:prd": "yarn build:prd && firebase use production && firebase deploy && firebase use default",
+    "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy && firebase use default",
+    "eslint": "yarn workspaces run eslint",
+    "prepare": "husky install",
+    "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
+    "prettier:web": "prettier -w web/*.json web/src/**/*.{ts,tsx}",
+    "test": "yarn workspaces run test",
+    "web": "yarn workspace web"
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -13,20 +35,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "@google/semantic-release-replace-plugin": "^1.1.0",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^7.0.0",
-    "prettier": "^2.7.1",
-    "semantic-release": "^19.0.5"
-  },
-  "packageManager": "yarn@3.2.4",
-  "private": true,
   "release": {
     "branches": [
       "main"
@@ -71,29 +79,21 @@
       ]
     ]
   },
-  "repository": "https://github.com/KazuyaHara/sitka",
-  "scripts": {
-    "build:dev": "yarn workspaces run build:dev",
-    "build:prd": "yarn workspaces run build:prd",
-    "build:stg": "yarn workspaces run build:stg",
-    "commit": "npx cz",
-    "deploy:dev": "yarn build:dev && firebase use default && firebase deploy",
-    "deploy:prd": "yarn build:prd && firebase use production && firebase deploy && firebase use default",
-    "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy && firebase use default",
-    "eslint": "yarn workspaces run eslint",
-    "prepare": "husky install",
-    "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
-    "prettier:web": "prettier -w web/*.json web/src/**/*.{ts,tsx}",
-    "test": "yarn workspaces run test",
-    "web": "yarn workspace web"
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@google/semantic-release-replace-plugin": "^1.1.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.7.1",
+    "semantic-release": "^19.0.5"
   },
+  "packageManager": "yarn@3.2.4",
   "volta": {
     "node": "16.18.0",
     "yarn": "3.2.4"
-  },
-  "workspaces": {
-    "packages": [
-      "web"
-    ]
   }
 }
