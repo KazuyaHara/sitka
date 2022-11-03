@@ -65,7 +65,7 @@ export default function GearEdit() {
     setLoading(true);
     return updateGear(id, data)
       .then(() => {
-        useAlertStore.setState({ message: '機材を登録しました', open: true, severity: 'success' });
+        useAlertStore.setState({ message: '機材を更新しました', open: true, severity: 'success' });
         navigate('/gears');
       })
       .catch(({ message }: Error) => {
@@ -83,12 +83,9 @@ export default function GearEdit() {
       <Box mt={1.5}>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h2">{gear.name}</Typography>
-          <Button
-            component={Link}
-            size="small"
-            to={`/media?gear=${gear.id}`}
-            variant="outlined"
-          >{`この機材で取られた${gear.typeJP}を表示`}</Button>
+          <Button component={Link} size="small" to={`/gears/${gear.id}/media`} variant="outlined">
+            {`この機材で取られた${gear.typeJP}を表示`}
+          </Button>
         </Box>
         <Form data={gear} loading={loading} onSubmit={onUpdate} options={gears} sx={{ mt: 3 }} />
         <Box display="flex" justifyContent="flex-end" mt={3}>

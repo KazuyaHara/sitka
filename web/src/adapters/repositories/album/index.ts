@@ -17,5 +17,9 @@ export default function albumRepository(): IAlbumRepository {
         })
       );
 
-  return { create, list };
+  const update = async (data: Album) => {
+    await albumDriver().update(data);
+  };
+
+  return { create, list, update };
 }

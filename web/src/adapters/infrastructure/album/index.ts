@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  doc,
   DocumentReference,
   FieldValue,
   getDocs,
@@ -9,6 +10,7 @@ import {
   query,
   QuerySnapshot,
   serverTimestamp,
+  setDoc,
   Timestamp,
 } from 'firebase/firestore';
 
@@ -25,10 +27,12 @@ type CreateParams = Pick<Album, 'date' | 'name'> & {
   createdAt: FieldValue;
   updatedAt: FieldValue;
 };
+type UpdateParams = Omit<CreateParams, 'createdAt'>;
 
 export interface IAlbumDriver {
   create(data: Album): Promise<DocumentReference>;
   list(): Promise<QuerySnapshot<AlbumData>>;
+  update(data: Album): Promise<void>;
 }
 
 export default function albumDriver(): IAlbumDriver {
@@ -53,5 +57,12 @@ export default function albumDriver(): IAlbumDriver {
       }
     );
 
-  return { create, list };
+  const update = async (data: Album) => {
+    const params: UpdateParams = { date: data.date, name: data.name, updatedAt: serverTimestamp() };
+    return setDoc(doc(albumsRef, data.id), params, { merge: true }).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+  };
+
+  return { create, list, update };
 }

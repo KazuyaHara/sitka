@@ -7,5 +7,8 @@ export default function useAlbumUseCase(userRepository: IAlbumRepository): IAlbu
 
   const list = async () => userRepository.list();
 
-  return { create, list };
+  const update = async (id: string, data: AlbumSubmit) =>
+    userRepository.update(new Album({ id, ...data }));
+
+  return { create, list, update };
 }
