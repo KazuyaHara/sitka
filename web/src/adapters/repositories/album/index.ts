@@ -7,6 +7,10 @@ export default function albumRepository(): IAlbumRepository {
     await albumDriver().create(data);
   };
 
+  const destroy = async (data: Album) => {
+    await albumDriver().destroy(data);
+  };
+
   const list = async () =>
     albumDriver()
       .list()
@@ -21,5 +25,5 @@ export default function albumRepository(): IAlbumRepository {
     await albumDriver().update(data);
   };
 
-  return { create, list, update };
+  return { create, destroy, list, update };
 }

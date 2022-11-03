@@ -7,7 +7,7 @@ service cloud.firestore {
     }
 
     match /albums/{albumId} {
-      allow list, create, update: if authenticated();
+      allow list, write: if authenticated();
     }
 
     match /gears/{gearId} {

@@ -4,6 +4,7 @@ import {
   doc,
   DocumentReference,
   FieldValue,
+  deleteDoc,
   getDocs,
   orderBy,
   Query,
@@ -31,6 +32,7 @@ type UpdateParams = Omit<CreateParams, 'createdAt'>;
 
 export interface IAlbumDriver {
   create(data: Album): Promise<DocumentReference>;
+  destroy(data: Album): Promise<void>;
   list(): Promise<QuerySnapshot<AlbumData>>;
   update(data: Album): Promise<void>;
 }
@@ -50,6 +52,11 @@ export default function albumDriver(): IAlbumDriver {
     });
   };
 
+  const destroy = async (data: Album) =>
+    deleteDoc(doc(albumsRef, data.id)).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+
   const list = async () =>
     getDocs(query(albumsRef as Query<AlbumData>, orderBy('date'), orderBy('name'))).catch(
       (error) => {
@@ -64,5 +71,5 @@ export default function albumDriver(): IAlbumDriver {
     });
   };
 
-  return { create, list, update };
+  return { create, destroy, list, update };
 }
