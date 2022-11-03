@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import GlobalStyles from './globalStyles';
 import palette from './palette';
@@ -16,7 +18,7 @@ export default function Theme({ children }: Props) {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <CssBaseline enableColorScheme />
-      {children}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>{children}</LocalizationProvider>
     </ThemeProvider>
   );
 }

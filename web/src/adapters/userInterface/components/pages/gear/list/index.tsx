@@ -31,7 +31,7 @@ export default function GearList() {
             xs={12}
             sm={4}
             sx={{ textDecoration: 'none' }}
-            to={`/media?gear=${gear.id}`}
+            to={`/gears/${gear.id}/media`}
           >
             <GearCard gear={gear} />
           </Grid>

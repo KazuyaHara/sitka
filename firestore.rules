@@ -6,6 +6,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    match /albums/{albumId} {
+      allow list, create: if authenticated();
+    }
+
     match /gears/{gearId} {
       allow list, write: if authenticated();
     }
