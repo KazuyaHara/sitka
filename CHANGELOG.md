@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/KazuyaHara/sitka/compare/v0.3.0...v0.4.0) (2022-11-03)
+
+
+### Features
+
+* manage albums ([#17](https://github.com/KazuyaHara/sitka/issues/17)) ([6fb89b0](https://github.com/KazuyaHara/sitka/commit/6fb89b08e6ea8c7a80abf49ed464f016920ed976))
+
 # [0.3.0](https://github.com/KazuyaHara/sitka/compare/v0.2.0...v0.3.0) (2022-10-29)
 
 
