@@ -23,8 +23,8 @@ export class Gear {
     return this._maker;
   }
 
-  set maker(name: TGear['maker']) {
-    this._maker = name;
+  set maker(maker: TGear['maker']) {
+    this._maker = maker;
   }
 
   get name(): TGear['name'] {

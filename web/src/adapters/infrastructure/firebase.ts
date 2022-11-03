@@ -1,6 +1,6 @@
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
-import { Firestore, getFirestore } from 'firebase/firestore';
+import { Firestore, FirestoreError, getFirestore } from 'firebase/firestore';
 
 export default class Firebase {
   private _app: FirebaseApp;
@@ -45,3 +45,16 @@ export default class Firebase {
     return this._firetore;
   }
 }
+
+export const handleFirestoreError = (error: FirestoreError): Error => {
+  switch (error.code) {
+    case 'already-exists':
+      return new Error('既に同じデータが存在しています');
+    case 'not-found':
+      return new Error('データが見つかりませんでした');
+    case 'permission-denied':
+      return new Error('権限が不足しています');
+    default:
+      return new Error('エラーが発生しました');
+  }
+};

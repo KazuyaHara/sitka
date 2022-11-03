@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CameraAlt, Photo } from '@mui/icons-material';
+import { AutoStories, CameraAlt, Photo } from '@mui/icons-material';
 import {
   Box,
   Drawer as MUIDrawer,
@@ -23,6 +23,11 @@ export const DrawerContent = () => {
 
   const items = [
     { icon: <Photo sx={{ color: palette.text.primary }} />, primary: 'メディア', to: '/media' },
+    {
+      icon: <AutoStories sx={{ color: palette.text.primary }} />,
+      primary: 'アルバム',
+      to: '/albums',
+    },
     { icon: <CameraAlt sx={{ color: palette.text.primary }} />, primary: '機材', to: '/gears' },
   ];
 
