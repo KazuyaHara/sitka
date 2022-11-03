@@ -33,6 +33,8 @@ jobs:
     name: Preview on staging environment
     needs: [lint]
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
     steps:
       - name: 🏗 Checkout
         uses: actions/checkout@v3
@@ -57,7 +59,10 @@ jobs:
       - name: 📦 Build app
         run: yarn build:stg
 
+      - name: 📝 Create Google Service Account
+        run: echo ${{ secrets.GOOGLE_SERVICE_ACCOUNT_STG }} | base64 --decode > service-account.json
+
       - name: 🚀 Deploy Firebase
         run: |
           npm i -g firebase-tools
-          firebase deploy --project staging --token ${{ secrets.FIREBASE_TOKEN }} --force
+          firebase deploy --project staging --force
