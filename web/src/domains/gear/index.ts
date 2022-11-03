@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 type TGear = { id: string; maker: string; name: string; type: 'photo' | 'movie' };
-type Constructor = Omit<TGear, 'id'> & { id?: string };
+type Constructor = Omit<TGear, 'id'> & { id?: TGear['id'] };
 
 export class Gear {
   private _id: TGear['id'];

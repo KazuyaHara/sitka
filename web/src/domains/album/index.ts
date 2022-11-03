@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 type TAlbum = { id: string; date: Date; name: string };
-type Constructor = Omit<TAlbum, 'id'> & { id?: string };
+type Constructor = Omit<TAlbum, 'id'> & { id?: TAlbum['id'] };
 
 export class Album {
   private _id: TAlbum['id'];
