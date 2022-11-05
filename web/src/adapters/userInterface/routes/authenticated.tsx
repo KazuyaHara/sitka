@@ -8,8 +8,8 @@ import AlbumList from '../components/pages/album/list';
 import GearAdd from '../components/pages/gear/add';
 import GearEdit from '../components/pages/gear/edit';
 import GearList from '../components/pages/gear/list';
-import MediaAdd from '../components/pages/media/add';
-import MediaList from '../components/pages/media/list';
+import ItemAdd from '../components/pages/item/add';
+import ItemList from '../components/pages/item/list';
 
 export default function Authenticated() {
   return (
@@ -20,9 +20,9 @@ export default function Authenticated() {
       { path: '/gears', element: <GearList /> },
       { path: '/gears/add', element: <GearAdd /> },
       { path: '/gears/:id', element: <GearEdit /> },
-      { path: '/media', element: <MediaList /> },
-      { path: '/media/add', element: <MediaAdd /> },
+      { path: '/media', element: <ItemList /> },
+      { path: '/media/add', element: <ItemAdd /> },
       { path: '*', element: <Navigate to="/media" replace /> },
-    ]) || <MediaList />
+    ]) || <ItemList />
   );
 }

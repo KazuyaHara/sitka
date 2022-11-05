@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 
 import Header from '../header';
 
-export default function MediaList() {
+export default function ItemList() {
   return (
     <>
       <Header />

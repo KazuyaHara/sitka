@@ -4,7 +4,7 @@ import { Edit } from '@mui/icons-material';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import { Gear } from '../../../../../../domains/gear';
+import { Gear, getTypeJP } from '../../../../../../domains/gear';
 
 type Props = { gear: Gear };
 
@@ -24,7 +24,7 @@ export default function GearCard({ gear }: Props) {
           {gear.name}
         </Typography>
         <Typography color="text.secondary" variant="caption">
-          {gear.typeJP}
+          {getTypeJP(gear.type)}
         </Typography>
       </CardContent>
     </Card>

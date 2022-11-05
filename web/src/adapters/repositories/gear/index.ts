@@ -3,25 +3,25 @@ import { IGearRepository } from '../../../interface/repository/gear';
 import gearDriver from '../../infrastructure/gear';
 
 export default function gearRepository(): IGearRepository {
-  const create = async (data: Gear) => {
+  const create = async (data: Gear): Promise<void> => {
     await gearDriver().create(data);
   };
 
-  const destroy = async (data: Gear) => {
+  const destroy = async (data: Gear): Promise<void> => {
     await gearDriver().destroy(data);
   };
 
-  const list = async () =>
+  const list = async (): Promise<Gear[]> =>
     gearDriver()
       .list()
       .then((querySnapshot) =>
-        querySnapshot.docs.map((doc) => {
+        querySnapshot.docs.map((doc): Gear => {
           const data = doc.data();
-          return new Gear({ id: doc.id, maker: data.maker, name: data.name, type: data.type });
+          return { id: doc.id, maker: data.maker, name: data.name, type: data.type };
         })
       );
 
-  const update = async (data: Gear) => {
+  const update = async (data: Gear): Promise<void> => {
     await gearDriver().update(data);
   };
 

@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 import useItemUseCase from '../../../../../../application/useCases/item';
 import { ItemSubmit } from '../../../../../../interface/useCase/item';
+import itemRepository from '../../../../../repositories/item';
 import mediumRepository from '../../../../../repositories/medium';
 import { useAlertStore } from '../../../../../stores/alert';
 import Form from '../../../organisms/form/item';
 
-export default function MediaAdd() {
-  const { queueUpload } = useItemUseCase(mediumRepository());
+export default function ItemAdd() {
+  const { queueUpload } = useItemUseCase(itemRepository(), mediumRepository());
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 

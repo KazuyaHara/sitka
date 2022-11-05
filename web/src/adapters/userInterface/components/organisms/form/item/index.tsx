@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 
-import { LoadingButton, Masonry } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, BoxProps, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { ItemSubmit } from '../../../../../../interface/useCase/item';
+import AspectRetioImage from '../../../atoms/aspectRatioImage';
 
 type Form = Omit<ItemSubmit, 'files'>;
 type Props = { loading: boolean; onSubmit: (data: ItemSubmit) => void; sx?: BoxProps['sx'] };
@@ -38,11 +39,13 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
         </Grid>
       </Grid>
 
-      <Masonry columns={{ xs: 3, sm: 4, md: 6 }} spacing={1} sx={{ mt: 3 }}>
+      <Grid container spacing={1} mt={3}>
         {files.map((file) => (
-          <Box borderRadius={1} component="img" key={file.name} src={URL.createObjectURL(file)} />
+          <Grid item key={file.name} xs={4} sm={3} md={2}>
+            <AspectRetioImage borderRadius={1} src={URL.createObjectURL(file)} />
+          </Grid>
         ))}
-      </Masonry>
+      </Grid>
 
       <Box display="flex" justifyContent="flex-end">
         <LoadingButton
