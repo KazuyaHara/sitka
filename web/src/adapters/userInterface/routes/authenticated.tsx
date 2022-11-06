@@ -8,24 +8,21 @@ import AlbumList from '../components/pages/album/list';
 import GearAdd from '../components/pages/gear/add';
 import GearEdit from '../components/pages/gear/edit';
 import GearList from '../components/pages/gear/list';
-import MediaList from '../components/pages/media/list';
+import ItemAdd from '../components/pages/item/add';
+import ItemList from '../components/pages/item/list';
 
 export default function Authenticated() {
   return (
     useRoutes([
-      {
-        path: '/',
-        children: [
-          { path: '/albums', element: <AlbumList /> },
-          { path: '/albums/add', element: <AlbumAdd /> },
-          { path: '/albums/:id', element: <AlbumEdit /> },
-          { path: '/gears', element: <GearList /> },
-          { path: '/gears/add', element: <GearAdd /> },
-          { path: '/gears/:id', element: <GearEdit /> },
-          { path: '/media', element: <MediaList /> },
-          { path: '*', element: <Navigate to="/media" replace /> },
-        ],
-      },
-    ]) || <MediaList />
+      { path: '/albums', element: <AlbumList /> },
+      { path: '/albums/add', element: <AlbumAdd /> },
+      { path: '/albums/:id', element: <AlbumEdit /> },
+      { path: '/gears', element: <GearList /> },
+      { path: '/gears/add', element: <GearAdd /> },
+      { path: '/gears/:id', element: <GearEdit /> },
+      { path: '/media', element: <ItemList /> },
+      { path: '/media/add', element: <ItemAdd /> },
+      { path: '*', element: <Navigate to="/media" replace /> },
+    ]) || <ItemList />
   );
 }

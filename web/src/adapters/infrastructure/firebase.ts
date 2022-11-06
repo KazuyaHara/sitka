@@ -1,12 +1,14 @@
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
 import { Firestore, FirestoreError, getFirestore } from 'firebase/firestore';
+import { FirebaseStorage, getStorage, StorageError } from 'firebase/storage';
 
 export default class Firebase {
   private _app: FirebaseApp;
   private _auth: Auth;
   private _firetore: Firestore;
   private static _instance: Firebase; // eslint-disable-line no-use-before-define
+  private _storage: FirebaseStorage;
 
   private constructor() {
     this._app = initializeApp({
@@ -22,6 +24,7 @@ export default class Firebase {
     this._auth = getAuth(this._app);
     this._auth.languageCode = 'ja';
     this._firetore = getFirestore(this._app);
+    this._storage = getStorage(this._app);
   }
 
   public static get instance(): Firebase {
@@ -44,6 +47,12 @@ export default class Firebase {
     this._firetore = getFirestore(this._app);
     return this._firetore;
   }
+
+  public get storage(): FirebaseStorage {
+    if (this._storage) return this._storage;
+    this._storage = getStorage(this._app);
+    return this._storage;
+  }
 }
 
 export const handleFirestoreError = (error: FirestoreError): Error => {
@@ -53,6 +62,19 @@ export const handleFirestoreError = (error: FirestoreError): Error => {
     case 'not-found':
       return new Error('データが見つかりませんでした');
     case 'permission-denied':
+      return new Error('権限が不足しています');
+    default:
+      return new Error('エラーが発生しました');
+  }
+};
+
+export const handleStorageError = (error: StorageError) => {
+  switch (error.code) {
+    case 'storage/retry-limit-exceeded':
+      return new Error('最大時間制限を超えました');
+    case 'storage/unauthenticated':
+      return new Error('ユーザー認証が必要です');
+    case 'storage/unauthorized':
       return new Error('権限が不足しています');
     default:
       return new Error('エラーが発生しました');

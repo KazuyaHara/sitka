@@ -7,6 +7,7 @@
   "author": "Kazuya Hara <iam@kazuyahara.dev>",
   "workspaces": {
     "packages": [
+      "functions",
       "web"
     ]
   },
@@ -19,8 +20,10 @@
     "deploy:prd": "yarn build:prd && firebase use production && firebase deploy && firebase use default",
     "deploy:stg": "yarn build:stg && firebase use staging && firebase deploy && firebase use default",
     "eslint": "yarn workspaces foreach -p run eslint",
+    "functions": "yarn workspace functions",
     "prepare": "husky install",
-    "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:web",
+    "prettier": "prettier -w .github/**/*.yml package.json README.md && yarn prettier:functions && yarn prettier:web",
+    "prettier:functions": "prettier -w functions/*.json functions/src/**/*.ts",
     "prettier:web": "prettier -w web/*.json web/src/**/*.{ts,tsx}",
     "test": "yarn workspaces foreach -p run test",
     "web": "yarn workspace web"
@@ -52,6 +55,7 @@
             {
               "files": [
                 "package.json",
+                "functions/package.json",
                 "web/package.json"
               ],
               "from": "\"version\": \".*\"",
@@ -66,6 +70,7 @@
           "assets": [
             "CHANGELOG.md",
             "package.json",
+            "functions/package.json",
             "web/package.json"
           ],
           "message": "chore(release): ${nextRelease.gitTag} [skip ci]"

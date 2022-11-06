@@ -18,16 +18,16 @@ import {
 import { Gear } from '../../../domains/gear';
 import Firebase, { handleFirestoreError } from '../firebase';
 
-type GearData = Pick<Gear, 'maker' | 'name' | 'type'> & {
+type GearData = Omit<Gear, 'id' | 'createdAt' | 'updatedAt'> & {
   createdAt: Timestamp;
   updatedAt: Timestamp;
 };
 
-type CreateParams = Pick<Gear, 'maker' | 'name' | 'type'> & {
+type CreateParams = Pick<Gear, 'items' | 'maker' | 'model' | 'name' | 'type'> & {
   createdAt: FieldValue;
   updatedAt: FieldValue;
 };
-type UpdateParams = Omit<CreateParams, 'createdAt'>;
+type UpdateParams = Omit<CreateParams, 'items' | 'createdAt'>;
 
 export interface IGearDriver {
   create(data: Gear): Promise<DocumentReference>;
@@ -39,11 +39,10 @@ export interface IGearDriver {
 export default function gearDriver(): IGearDriver {
   const gearsRef = collection(Firebase.instance.firetore, 'gears');
 
-  const create = async (data: Gear) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const create = async ({ id, ...data }: Gear) => {
     const params: CreateParams = {
-      maker: data.maker,
-      name: data.name,
-      type: data.type,
+      ...data,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -64,14 +63,9 @@ export default function gearDriver(): IGearDriver {
       }
     );
 
-  const update = async (data: Gear) => {
-    const params: UpdateParams = {
-      maker: data.maker,
-      name: data.name,
-      type: data.type,
-      updatedAt: serverTimestamp(),
-    };
-    return setDoc(doc(gearsRef, data.id), params, { merge: true }).catch((error) => {
+  const update = async ({ id, ...data }: Gear) => {
+    const params: UpdateParams = { ...data, updatedAt: serverTimestamp() };
+    return setDoc(doc(gearsRef, id), params, { merge: true }).catch((error) => {
       throw handleFirestoreError(error);
     });
   };

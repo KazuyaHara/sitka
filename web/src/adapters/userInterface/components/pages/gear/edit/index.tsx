@@ -4,7 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { Link, Navigate, useParams, useNavigate } from 'react-router-dom';
 
 import useGearUseCase from '../../../../../../application/useCases/gear';
-import { Gear } from '../../../../../../domains/gear';
+import { Gear, getTypeJP } from '../../../../../../domains/gear';
 import { GearSubmit } from '../../../../../../interface/useCase/gear';
 import gearRepository from '../../../../../repositories/gear';
 import { useAlertStore } from '../../../../../stores/alert';
@@ -60,10 +60,10 @@ export default function GearEdit() {
   };
 
   const onUpdate = async (data: GearSubmit) => {
-    if (!id) return navigate('/gears');
+    if (!gear) return navigate('/gears');
 
     setLoading(true);
-    return updateGear(id, data)
+    return updateGear({ ...gear, ...data })
       .then(() => {
         useAlertStore.setState({ message: '機材を更新しました', open: true, severity: 'success' });
         navigate('/gears');
@@ -84,7 +84,7 @@ export default function GearEdit() {
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h2">{gear.name}</Typography>
           <Button component={Link} size="small" to={`/gears/${gear.id}/media`} variant="outlined">
-            {`この機材で取られた${gear.typeJP}を表示`}
+            {`この機材で取られた${getTypeJP(gear.type)}を表示`}
           </Button>
         </Box>
         <Form data={gear} loading={loading} onSubmit={onUpdate} options={gears} sx={{ mt: 3 }} />
