@@ -23,7 +23,14 @@ export default function GearAdd() {
 
   const onSubmit = async (data: GearSubmit) => {
     setLoading(true);
-    await createGear(data)
+    await createGear({
+      ...data,
+      id: '',
+      items: 0,
+      model: data.name,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
       .then(() => {
         useAlertStore.setState({ message: '機材を登録しました', open: true, severity: 'success' });
         navigate('/gears');

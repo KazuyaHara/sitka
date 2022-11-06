@@ -24,7 +24,7 @@ export default function GearCard({ gear }: Props) {
           {gear.name}
         </Typography>
         <Typography color="text.secondary" variant="caption">
-          {getTypeJP(gear.type)}
+          {`${gear.items.toLocaleString()}枚の${getTypeJP(gear.type)}`}
         </Typography>
       </CardContent>
     </Card>

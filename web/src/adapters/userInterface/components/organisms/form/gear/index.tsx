@@ -58,6 +58,7 @@ export default function GearForm({ data, loading, onSubmit, options, sx }: Props
             freeSolo
             options={options
               .map((option) => option.maker)
+              .filter((maker): maker is NonNullable<typeof maker> => maker != null)
               .filter((maker, index, self) => self.indexOf(maker) === index)}
             renderInput={(params) => {
               const { value, ...inputProps } = params.inputProps; // eslint-disable-line @typescript-eslint/no-unused-vars

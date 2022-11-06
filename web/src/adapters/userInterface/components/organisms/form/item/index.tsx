@@ -24,7 +24,7 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
     <Box component="form" onSubmit={handleSubmit(handleForm)} sx={sx}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <Button component="label" variant="outlined">
+          <Button component="label" disabled={loading} variant="outlined">
             ファイルを選択する
             <input
               accept="image/*"

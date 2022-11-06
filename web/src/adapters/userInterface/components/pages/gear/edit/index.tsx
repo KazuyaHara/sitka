@@ -60,10 +60,10 @@ export default function GearEdit() {
   };
 
   const onUpdate = async (data: GearSubmit) => {
-    if (!id) return navigate('/gears');
+    if (!gear) return navigate('/gears');
 
     setLoading(true);
-    return updateGear(id, data)
+    return updateGear({ ...gear, ...data })
       .then(() => {
         useAlertStore.setState({ message: '機材を更新しました', open: true, severity: 'success' });
         navigate('/gears');
