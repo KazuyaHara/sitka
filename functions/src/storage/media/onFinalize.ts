@@ -61,6 +61,7 @@ export const processUploadedMedia = region('asia-northeast1')
     return itemRef
       .set(
         {
+          date: exif?.exif?.DateTimeOriginal || new Date(0),
           medium: { exif, thumbnail: `${mediaPath}/${destinationFileName}` },
           updatedAt: firestore.FieldValue.serverTimestamp(),
         },

@@ -16,7 +16,7 @@ export default function useItemUseCase(
   const upload = async (file: File) => {
     const id = itemRepository.getId();
 
-    // upload file to Firestore Storage
+    // Upload file to Firestore Storage
     let medium: Medium = {
       id,
       archived: false,
@@ -28,8 +28,9 @@ export default function useItemUseCase(
     };
     medium = await mediumRepository.upload(medium, file);
 
-    // save item to Firebase Firestore
-    const item: Item = { id, medium };
+    // Save item to Firebase Firestore
+    // set UNIX epoch to date temporarily
+    const item: Item = { id, date: new Date(0), medium };
     await itemRepository.create(item);
   };
 
