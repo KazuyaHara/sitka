@@ -20,7 +20,7 @@ export default function useItemUseCase(
     let medium: Medium = {
       id,
       archived: false,
-      extension: file.name.split('.').pop() as Medium['extension'],
+      extension: file.name.split('.').pop()?.toLowerCase() as Medium['extension'],
       mimeType: file.type as Medium['mimeType'],
       name: file.name,
       path: '',

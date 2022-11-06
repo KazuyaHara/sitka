@@ -9,11 +9,12 @@ export interface IMediumDriver {
 
 export default function mediumDriver(): IMediumDriver {
   const upload = async (medium: Medium, file: File) =>
-    uploadBytes(ref(Firebase.instance.storage, `media/${medium.id}/${medium.name}`), file).catch(
-      (error) => {
-        throw handleStorageError(error);
-      }
-    );
+    uploadBytes(
+      ref(Firebase.instance.storage, `media/${medium.id}/original.${medium.extension}`),
+      file
+    ).catch((error) => {
+      throw handleStorageError(error);
+    });
 
   return { upload };
 }

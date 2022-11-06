@@ -56,7 +56,7 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
           type="submit"
           variant="contained"
         >
-          作成する
+          アップロードする
         </LoadingButton>
       </Box>
     </Box>
