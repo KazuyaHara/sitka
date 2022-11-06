@@ -1,12 +1,36 @@
-import { collection, doc, FieldValue, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  FieldValue,
+  limit,
+  onSnapshot,
+  orderBy,
+  Query,
+  query,
+  QuerySnapshot,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+  Unsubscribe,
+} from 'firebase/firestore';
 
 import { Item } from '../../../domains/item';
 import { Medium } from '../../../domains/medium';
 import Firebase, { handleFirestoreError } from '../firebase';
 
+type ItemData = Omit<Item, 'id' | 'date' | 'createdAt' | 'updatedAt'> & {
+  date: Timestamp;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+};
+
 export interface IItemDriver {
   create(data: Item): Promise<void>;
   getId(): string;
+  subscribe: (
+    limitNumber: number,
+    onNext: (querySnapshot: QuerySnapshot<ItemData>) => void
+  ) => Unsubscribe;
 }
 
 type CreateParams = { medium: Medium; createdAt: FieldValue; updatedAt: FieldValue };
@@ -27,5 +51,14 @@ export default function itemDriver(): IItemDriver {
 
   const getId = () => doc(itemsRef).id;
 
-  return { create, getId };
+  const subscribe = (
+    limitNumber: number,
+    onNext: (querySnapshot: QuerySnapshot<ItemData>) => void
+  ) =>
+    onSnapshot(
+      query(itemsRef as Query<ItemData>, orderBy('date', 'desc'), limit(limitNumber)),
+      onNext
+    );
+
+  return { create, getId, subscribe };
 }

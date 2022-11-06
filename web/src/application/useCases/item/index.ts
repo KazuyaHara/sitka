@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { Item } from '../../../domains/item';
+import { Item, ItemWithURL } from '../../../domains/item';
 import { Medium } from '../../../domains/medium';
 import { IItemRepository } from '../../../interface/repository/item';
 import { IMediumRepository } from '../../../interface/repository/medium';
@@ -12,6 +12,17 @@ export default function useItemUseCase(
   const queueUpload = async (files: File[]) => {
     await Promise.all(Array.from(files).map(async (file) => upload(file)));
   };
+
+  const subscribe = (limit: number, onNext: (items: ItemWithURL[]) => void) =>
+    itemRepository.subscribe(limit, async (items) => {
+      const itemsWithURL = await Promise.all(
+        items.map(async (item) => {
+          const url = await mediumRepository.getURL(item.medium.thumbnail || item.medium.path);
+          return { ...item, url };
+        })
+      );
+      onNext(itemsWithURL);
+    });
 
   const upload = async (file: File) => {
     const id = itemRepository.getId();
@@ -34,5 +45,5 @@ export default function useItemUseCase(
     await itemRepository.create(item);
   };
 
-  return { queueUpload, upload };
+  return { queueUpload, subscribe, upload };
 }

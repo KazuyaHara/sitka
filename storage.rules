@@ -7,7 +7,7 @@ service firebase.storage {
     }
 
     match /media/{mediumId}/{fileName} {
-      allow write: if authenticated();
+      allow read, write: if authenticated();
     }
   }
 }
