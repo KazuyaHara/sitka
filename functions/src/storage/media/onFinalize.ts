@@ -64,14 +64,57 @@ export const processUploadedMedia = region('asia-northeast1')
     fs.unlinkSync(localFile);
     fs.unlinkSync(localThumbnail);
 
+    // Register gear if needed
+    const gearName = exif?.image?.Model;
+    if (!gearName) return logger.log('No model name.');
+    const gearsRef = firestore().collection('gears');
+    const gear = await gearsRef
+      .where('model', '==', gearName)
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) return null;
+        return querySnapshot.docs[0];
+      });
+    let gearId = gear?.id;
+    if (gear) {
+      await gear.ref
+        .set({ items: increment(1), updatedAt: serverTimestamp() }, { merge: true })
+        .then(() => logger.info('Gear items has been incremented.'))
+        .catch((error) => {
+          logger.error('Error occurred while updating gear');
+          throw new Error(error);
+        });
+    } else {
+      await gearsRef
+        .add({
+          items: increment(1),
+          maker: exif.image?.Make || null,
+          model: gearName,
+          name: gearName,
+          type: 'photo',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        })
+        .then((ref) => {
+          logger.info('New gear has been added.');
+          gearId = ref.id;
+        })
+        .catch((error) => {
+          logger.error('Error occurred while creating gear');
+          throw new Error(error);
+        });
+    }
+
     // Update item
     const mediaPath = path.dirname(name);
     const itemPath = mediaPath.replace('media/', 'items/');
     const itemRef = firestore().doc(itemPath);
-    await itemRef
+    return itemRef
       .set(
         {
           date: getZonedTime(exif?.exif?.DateTimeOriginal),
+          gearId,
           medium: {
             exif: {
               ...exif,
@@ -98,43 +141,6 @@ export const processUploadedMedia = region('asia-northeast1')
       .then(() => logger.info('Item information updated.'))
       .catch((error) => {
         logger.error('Error occurred while updating thumbnail path');
-        throw new Error(error);
-      });
-
-    // Register gear if needed
-    const gearName = exif?.image?.Model;
-    if (!gearName) return logger.log('No model name.');
-    const gearsRef = firestore().collection('gears');
-    const gear = await gearsRef
-      .where('model', '==', gearName)
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot.empty) return null;
-        return querySnapshot.docs[0];
-      });
-    if (gear) {
-      return gear.ref
-        .set({ items: increment(1), updatedAt: serverTimestamp() }, { merge: true })
-        .then(() => logger.info('Gear items has been incremented.'))
-        .catch((error) => {
-          logger.error('Error occurred while updating gear');
-          throw new Error(error);
-        });
-    }
-    return gearsRef
-      .add({
-        items: increment(1),
-        maker: exif.image?.Make || null,
-        model: gearName,
-        name: gearName,
-        type: 'photo',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      })
-      .then(() => logger.info('New gear has been added.'))
-      .catch((error) => {
-        logger.error('Error occurred while creating gear');
         throw new Error(error);
       });
   });
