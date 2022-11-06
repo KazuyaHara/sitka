@@ -5,8 +5,9 @@ import * as path from 'path';
 import { firestore, storage } from 'firebase-admin';
 import { logger, region } from 'firebase-functions';
 
-import * as mkdirp from 'mkdirp';
-import * as sharp from 'sharp';
+import exifReader from 'exif-reader';
+import mkdirp from 'mkdirp';
+import sharp from 'sharp';
 
 export const processUploadedMedia = region('asia-northeast1')
   .storage.object()
@@ -24,6 +25,11 @@ export const processUploadedMedia = region('asia-northeast1')
     await mkdirp(path.dirname(localFile));
     const bucket = storage().bucket();
     await bucket.file(name).download({ destination: localFile });
+
+    // Read exif from original file
+    const exif = await sharp(localFile)
+      .metadata()
+      .then((metadata) => metadata.exif && exifReader(metadata.exif));
 
     // Generate a thumbnail using sharp.
     const destinationFileName = 'thumbnail.jpg';
@@ -55,7 +61,7 @@ export const processUploadedMedia = region('asia-northeast1')
     return itemRef
       .set(
         {
-          medium: { thumbnail: `${mediaPath}/${destinationFileName}` },
+          medium: { exif, thumbnail: `${mediaPath}/${destinationFileName}` },
           updatedAt: firestore.FieldValue.serverTimestamp(),
         },
         { merge: true }

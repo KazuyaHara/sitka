@@ -4595,6 +4595,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/exif-reader@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/exif-reader@npm:1.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 21b79582ee85cd3689334dffd4df8c08f782e04af02c49cf1ab7813c0a9fd9b01b82847bfbecb5136306c45bf4277c08bc1331367799c16079ad994adc7892b5
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.18":
   version: 4.17.31
   resolution: "@types/express-serve-static-core@npm:4.17.31"
@@ -8903,6 +8912,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"exif-reader@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "exif-reader@npm:1.0.3"
+  checksum: 1911be2397e543c9d7639756d5126f8c6e343d890fda0e94b672d910a2fba6956d0a82687682597bb789207b3d0d6f0fa9c0fc80307f1f81a189102adb13e46c
+  languageName: node
+  linkType: hard
+
 "exit@npm:^0.1.2":
   version: 0.1.2
   resolution: "exit@npm:0.1.2"
@@ -9562,6 +9578,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "functions@workspace:functions"
   dependencies:
+    "@types/exif-reader": ^1.0.0
     "@types/mkdirp": ^1.0.2
     "@types/sharp": ^0.31.0
     "@typescript-eslint/eslint-plugin": ^5.42.0
@@ -9570,6 +9587,7 @@ __metadata:
     eslint-config-airbnb-base: ^15.0.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-import: ^2.26.0
+    exif-reader: ^1.0.3
     firebase-admin: ^10.0.2
     firebase-functions: ^3.18.0
     firebase-functions-test: ^0.2.0
