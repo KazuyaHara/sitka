@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/KazuyaHara/sitka/compare/v0.5.0...v0.6.0) (2022-11-07)
+
+
+### Features
+
+* delete items ([#23](https://github.com/KazuyaHara/sitka/issues/23)) ([4f3a590](https://github.com/KazuyaHara/sitka/commit/4f3a590809a515cf676c357c33cf1cd0dd4130d1))
+
 # [0.5.0](https://github.com/KazuyaHara/sitka/compare/v0.4.0...v0.5.0) (2022-11-06)
 
 
