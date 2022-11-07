@@ -1,7 +1,10 @@
 import {
   collection,
   doc,
+  DocumentReference,
+  DocumentSnapshot,
   FieldValue,
+  getDoc,
   limit,
   onSnapshot,
   orderBy,
@@ -26,6 +29,7 @@ type ItemData = Omit<Item, 'id' | 'date' | 'createdAt' | 'updatedAt'> & {
 
 export interface IItemDriver {
   create(data: Item): Promise<void>;
+  get(id: string): Promise<DocumentSnapshot<ItemData>>;
   getId(): string;
   subscribe: (
     limitNumber: number,
@@ -49,6 +53,11 @@ export default function itemDriver(): IItemDriver {
     });
   };
 
+  const get = async (id: string) =>
+    getDoc(doc(itemsRef, id) as DocumentReference<ItemData>).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+
   const getId = () => doc(itemsRef).id;
 
   const subscribe = (
@@ -60,5 +69,5 @@ export default function itemDriver(): IItemDriver {
       onNext
     );
 
-  return { create, getId, subscribe };
+  return { create, get, getId, subscribe };
 }

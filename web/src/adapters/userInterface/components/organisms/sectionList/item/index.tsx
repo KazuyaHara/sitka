@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, BoxProps, Grid, Typography } from '@mui/material';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 import { ItemWithURL } from '../../../../../../domains/item';
 import AspectRetioImage from '../../../atoms/aspectRatioImage';
@@ -27,7 +28,15 @@ export default function ItemSectionList({ items, sx }: Props) {
           </Typography>
           <Grid container spacing={1}>
             {section.list.map((item) => (
-              <Grid item key={item.id} xs={4} sm={3} md={2}>
+              <Grid
+                component={Link}
+                item
+                key={item.id}
+                xs={4}
+                sm={3}
+                md={2}
+                to={`/media/${item.id}`}
+              >
                 <AspectRetioImage borderRadius={1} src={item.url} />
               </Grid>
             ))}
