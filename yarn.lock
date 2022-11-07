@@ -9592,6 +9592,7 @@ __metadata:
     "@types/sharp": ^0.31.0
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
+    date-fns: ^2.29.3
     date-fns-tz: ^1.3.7
     eslint: ^8.9.0
     eslint-config-airbnb-base: ^15.0.0
