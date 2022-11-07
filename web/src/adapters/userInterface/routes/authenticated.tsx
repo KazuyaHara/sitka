@@ -9,6 +9,7 @@ import GearAdd from '../components/pages/gear/add';
 import GearEdit from '../components/pages/gear/edit';
 import GearList from '../components/pages/gear/list';
 import ItemAdd from '../components/pages/item/add';
+import ItemGet from '../components/pages/item/get';
 import ItemList from '../components/pages/item/list';
 
 export default function Authenticated() {
@@ -22,6 +23,7 @@ export default function Authenticated() {
       { path: '/gears/:id', element: <GearEdit /> },
       { path: '/media', element: <ItemList /> },
       { path: '/media/add', element: <ItemAdd /> },
+      { path: '/media/:id', element: <ItemGet /> },
       { path: '*', element: <Navigate to="/media" replace /> },
     ]) || <ItemList />
   );

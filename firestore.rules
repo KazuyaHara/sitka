@@ -11,7 +11,7 @@ service cloud.firestore {
     }
 
     match /items/{itemId} {
-      allow list, create: if authenticated();
+      allow read, create, update: if authenticated();
     }
 
     match /gears/{gearId} {

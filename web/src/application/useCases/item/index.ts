@@ -9,9 +9,18 @@ export default function useItemUseCase(
   itemRepository: IItemRepository,
   mediumRepository: IMediumRepository
 ): IItemUseCase {
+  const get = async (id: string) =>
+    itemRepository.get(id).then(async (item) => {
+      if (!item) return null;
+      const url = await mediumRepository.getURL(item.medium.path);
+      return { ...item, url };
+    });
+
   const queueUpload = async (files: File[]) => {
     await Promise.all(Array.from(files).map(async (file) => upload(file)));
   };
+
+  const softDelete = async (id: string) => itemRepository.softDelete(id);
 
   const subscribe = (limit: number, onNext: (items: ItemWithURL[]) => void) =>
     itemRepository.subscribe(limit, async (items) => {
@@ -45,5 +54,5 @@ export default function useItemUseCase(
     await itemRepository.create(item);
   };
 
-  return { queueUpload, subscribe, upload };
+  return { get, queueUpload, softDelete, subscribe, upload };
 }
