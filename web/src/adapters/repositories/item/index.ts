@@ -24,6 +24,8 @@ export default function itemRepository(): IItemRepository {
 
   const getId = (): string => itemDriver().getId();
 
+  const softDelete = (id: string): Promise<void> => itemDriver().softDelete(id);
+
   const subscribe = (limit: number, onNext: (items: Item[]) => void) =>
     itemDriver().subscribe(limit, (querySnapshot) =>
       onNext(
@@ -40,5 +42,5 @@ export default function itemRepository(): IItemRepository {
       )
     );
 
-  return { create, get, getId, subscribe };
+  return { create, get, getId, softDelete, subscribe };
 }

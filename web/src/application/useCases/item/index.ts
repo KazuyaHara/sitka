@@ -20,6 +20,8 @@ export default function useItemUseCase(
     await Promise.all(Array.from(files).map(async (file) => upload(file)));
   };
 
+  const softDelete = async (id: string) => itemRepository.softDelete(id);
+
   const subscribe = (limit: number, onNext: (items: ItemWithURL[]) => void) =>
     itemRepository.subscribe(limit, async (items) => {
       const itemsWithURL = await Promise.all(
@@ -52,5 +54,5 @@ export default function useItemUseCase(
     await itemRepository.create(item);
   };
 
-  return { get, queueUpload, subscribe, upload };
+  return { get, queueUpload, softDelete, subscribe, upload };
 }
