@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/KazuyaHara/sitka/compare/v0.6.0...v0.7.0) (2022-11-08)
+
+
+### Features
+
+* restore items ([#25](https://github.com/KazuyaHara/sitka/issues/25)) ([2aa5787](https://github.com/KazuyaHara/sitka/commit/2aa5787fa217fc3ae91f556e5f2b426add38c9a0))
+
 # [0.6.0](https://github.com/KazuyaHara/sitka/compare/v0.5.0...v0.6.0) (2022-11-07)
 
 
