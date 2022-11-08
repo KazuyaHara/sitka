@@ -5,6 +5,7 @@ import {
   DocumentSnapshot,
   FieldValue,
   getDoc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -16,6 +17,8 @@ import {
   Timestamp,
   Unsubscribe,
   where,
+  writeBatch,
+  WriteBatch,
 } from 'firebase/firestore';
 
 import { Item } from '../../../domains/item';
@@ -33,6 +36,8 @@ export interface IItemDriver {
   create(data: Item): Promise<void>;
   get(id: string): Promise<DocumentSnapshot<ItemData>>;
   getId(): string;
+  listDeleted(): Promise<QuerySnapshot<ItemData>>;
+  restoreItems(ids: string[]): Promise<void>;
   softDelete(id: string): Promise<void>;
   subscribe: (
     limitNumber: number,
@@ -70,6 +75,37 @@ export default function itemDriver(): IItemDriver {
 
   const getId = () => doc(itemsRef).id;
 
+  const listDeleted = async () =>
+    getDocs(
+      query(
+        itemsRef,
+        where('deletedAt', '!=', null),
+        orderBy('deletedAt', 'desc')
+      ) as Query<ItemData>
+    ).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+
+  const restoreItems = async (ids: string[]) => {
+    const batchArray = [] as Array<WriteBatch>;
+    batchArray.push(writeBatch(Firebase.instance.firetore));
+    let operationCounter = 0;
+    let batchIndex = 0;
+
+    ids.forEach((id) => {
+      batchArray[batchIndex].set(doc(itemsRef, id), { deletedAt: null }, { merge: true });
+      operationCounter += 1;
+      if (operationCounter >= 499) {
+        batchArray.push(writeBatch(Firebase.instance.firetore));
+        batchIndex += 1;
+        operationCounter = 0;
+      }
+    });
+    await Promise.all(batchArray.map(async (batch) => batch.commit())).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+  };
+
   const softDelete = async (id: string) => {
     const params: SoftDeleteParams = { deletedAt: serverTimestamp() };
     return setDoc(doc(itemsRef, id), params, { merge: true }).catch((error) => {
@@ -91,5 +127,5 @@ export default function itemDriver(): IItemDriver {
       onNext
     );
 
-  return { create, get, getId, softDelete, subscribe };
+  return { create, get, getId, listDeleted, restoreItems, softDelete, subscribe };
 }

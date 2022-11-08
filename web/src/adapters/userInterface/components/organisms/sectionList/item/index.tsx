@@ -23,7 +23,7 @@ export default function ItemSectionList({ items, sx }: Props) {
     <Box sx={sx}>
       {sections.map((section) => (
         <Box key={section.title} mb={3}>
-          <Typography gutterBottom variant="h2">
+          <Typography gutterBottom variant="h3">
             {section.title}
           </Typography>
           <Grid container spacing={1}>

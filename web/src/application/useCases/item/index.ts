@@ -16,9 +16,21 @@ export default function useItemUseCase(
       return { ...item, url };
     });
 
+  const listDeleted = async () =>
+    itemRepository.listDeleted().then(async (items) =>
+      Promise.all(
+        items.map(async (item) => {
+          const url = await mediumRepository.getURL(item.medium.thumbnail || item.medium.path);
+          return { ...item, url };
+        })
+      )
+    );
+
   const queueUpload = async (files: File[]) => {
     await Promise.all(Array.from(files).map(async (file) => upload(file)));
   };
+
+  const restoreItems = async (ids: string[]) => itemRepository.restoreItems(ids);
 
   const softDelete = async (id: string) => itemRepository.softDelete(id);
 
@@ -54,5 +66,5 @@ export default function useItemUseCase(
     await itemRepository.create(item);
   };
 
-  return { get, queueUpload, softDelete, subscribe, upload };
+  return { get, listDeleted, queueUpload, restoreItems, softDelete, subscribe, upload };
 }
