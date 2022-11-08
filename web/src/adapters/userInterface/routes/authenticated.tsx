@@ -11,6 +11,7 @@ import GearList from '../components/pages/gear/list';
 import ItemAdd from '../components/pages/item/add';
 import ItemGet from '../components/pages/item/get';
 import ItemList from '../components/pages/item/list';
+import TrashMedia from '../components/pages/trash/media';
 
 export default function Authenticated() {
   return (
@@ -24,6 +25,7 @@ export default function Authenticated() {
       { path: '/media', element: <ItemList /> },
       { path: '/media/add', element: <ItemAdd /> },
       { path: '/media/:id', element: <ItemGet /> },
+      { path: '/trash', element: <TrashMedia /> },
       { path: '*', element: <Navigate to="/media" replace /> },
     ]) || <ItemList />
   );

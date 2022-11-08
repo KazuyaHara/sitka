@@ -5,6 +5,7 @@ import {
   DocumentSnapshot,
   FieldValue,
   getDoc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -33,6 +34,7 @@ export interface IItemDriver {
   create(data: Item): Promise<void>;
   get(id: string): Promise<DocumentSnapshot<ItemData>>;
   getId(): string;
+  listDeleted(): Promise<QuerySnapshot<ItemData>>;
   softDelete(id: string): Promise<void>;
   subscribe: (
     limitNumber: number,
@@ -70,6 +72,17 @@ export default function itemDriver(): IItemDriver {
 
   const getId = () => doc(itemsRef).id;
 
+  const listDeleted = async () =>
+    getDocs(
+      query(
+        itemsRef,
+        where('deletedAt', '!=', null),
+        orderBy('deletedAt', 'desc')
+      ) as Query<ItemData>
+    ).catch((error) => {
+      throw handleFirestoreError(error);
+    });
+
   const softDelete = async (id: string) => {
     const params: SoftDeleteParams = { deletedAt: serverTimestamp() };
     return setDoc(doc(itemsRef, id), params, { merge: true }).catch((error) => {
@@ -91,5 +104,5 @@ export default function itemDriver(): IItemDriver {
       onNext
     );
 
-  return { create, get, getId, softDelete, subscribe };
+  return { create, get, getId, listDeleted, softDelete, subscribe };
 }

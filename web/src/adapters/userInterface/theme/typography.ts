@@ -18,6 +18,11 @@ const typography = {
     fontWeight: 700,
     ...responsiveFontSizes({ sm: 20, md: 20, lg: 20 }),
   },
+  h3: {
+    fontSize: pxToRem(12),
+    fontWeight: 700,
+    ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
+  },
 } as const;
 
 export default typography;
