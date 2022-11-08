@@ -9,12 +9,10 @@ import AspectRetioImage from '../../../atoms/aspectRatioImage';
 type Props = Pick<GridProps, 'sx'> & {
   items: ItemWithURL[];
   onSelectItem: (item: ItemWithURL) => void;
-  selectedItems: ItemWithURL[];
+  selectedItemIds: string[];
 };
 
-export default function ItemList({ items, onSelectItem, selectedItems, sx }: Props) {
-  const selectedItemIds = selectedItems.map((item) => item.id);
-
+export default function ItemList({ items, onSelectItem, selectedItemIds, sx }: Props) {
   return (
     <Grid container spacing={1} sx={sx}>
       {items.map((item) => (

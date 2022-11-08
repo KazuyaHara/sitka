@@ -1,24 +1,25 @@
 import React from 'react';
 
 import { Restore } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box } from '@mui/material';
 
-import { ItemWithURL } from '../../../../../../domains/item';
+type Props = { loading: boolean; onSubmit: () => void; selectedItemIds: string[] };
 
-type Props = { selectedItems: ItemWithURL[] };
-
-export default function TrashHeader({ selectedItems }: Props) {
+export default function TrashHeader({ loading, onSubmit, selectedItemIds }: Props) {
   return (
     <Box display="flex" justifyContent="flex-end" mb={3}>
-      <Button
-        disabled={selectedItems.length === 0}
+      <LoadingButton
+        disabled={selectedItemIds.length === 0}
         disableElevation
+        loading={loading}
+        onClick={onSubmit}
         startIcon={<Restore />}
         sx={{ borderRadius: 2 }}
         variant="contained"
       >
         選択したメディアを復元する
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }

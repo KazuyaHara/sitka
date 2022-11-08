@@ -40,6 +40,8 @@ export default function itemRepository(): IItemRepository {
         })
       );
 
+  const restoreItems = (ids: string[]): Promise<void> => itemDriver().restoreItems(ids);
+
   const softDelete = (id: string): Promise<void> => itemDriver().softDelete(id);
 
   const subscribe = (limit: number, onNext: (items: Item[]) => void) =>
@@ -58,5 +60,5 @@ export default function itemRepository(): IItemRepository {
       )
     );
 
-  return { create, get, getId, listDeleted, softDelete, subscribe };
+  return { create, get, getId, listDeleted, restoreItems, softDelete, subscribe };
 }
