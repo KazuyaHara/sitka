@@ -24,11 +24,13 @@
     "exif-reader": "^1.0.3",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
+    "fluent-ffmpeg": "^2.1.2",
     "mkdirp": "^1.0.4",
     "sharp": "^0.31.2"
   },
   "devDependencies": {
     "@types/exif-reader": "^1.0.0",
+    "@types/fluent-ffmpeg": "^2.1.20",
     "@types/mkdirp": "^1.0.2",
     "@types/sharp": "^0.31.0",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
