@@ -3,6 +3,8 @@ import { IMediumRepository } from '../../../interface/repository/medium';
 import mediumDriver from '../../infrastructure/medium';
 
 export default function mediumRepository(): IMediumRepository {
+  const getBlob = async (path: string): Promise<Blob> => mediumDriver().getBlob(path);
+
   const getURL = async (path: string): Promise<string> => mediumDriver().getURL(path);
 
   const upload = async (medium: Medium, file: File): Promise<Medium> => {
@@ -10,5 +12,5 @@ export default function mediumRepository(): IMediumRepository {
     return { ...medium, path: result.ref.fullPath, thumbnail: result.ref.fullPath };
   };
 
-  return { getURL, upload };
+  return { getBlob, getURL, upload };
 }
