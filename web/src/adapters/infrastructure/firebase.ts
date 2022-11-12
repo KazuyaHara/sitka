@@ -70,6 +70,10 @@ export const handleFirestoreError = (error: FirestoreError): Error => {
 
 export const handleStorageError = (error: StorageError) => {
   switch (error.code) {
+    case 'storage/canceled':
+      return new Error('キャンセルされました');
+    case 'storage/object-not-found':
+      return new Error('オブジェクトが見つかりませんでした');
     case 'storage/retry-limit-exceeded':
       return new Error('最大時間制限を超えました');
     case 'storage/unauthenticated':

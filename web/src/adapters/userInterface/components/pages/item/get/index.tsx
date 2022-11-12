@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import { CloudDownload } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button } from '@mui/material';
+import { saveAs } from 'file-saver';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import useItemUseCase from '../../../../../../application/useCases/item';
+import useMediumUseCase from '../../../../../../application/useCases/medium';
 import { ItemWithURL } from '../../../../../../domains/item';
 import itemRepository from '../../../../../repositories/item';
 import mediumRepository from '../../../../../repositories/medium';
@@ -16,6 +20,7 @@ export default function ItemGet() {
     itemRepository(),
     mediumRepository()
   );
+  const { getBlob } = useMediumUseCase(mediumRepository());
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<ItemWithURL | null>();
@@ -49,19 +54,46 @@ export default function ItemGet() {
       });
   };
 
+  const onSave = async () => {
+    if (!item) return navigate('/media');
+
+    setLoading(true);
+    return getBlob(item.medium.path)
+      .then((blob) => saveAs(blob, item.medium.name))
+      .catch(({ message }: Error) => {
+        setLoading(false);
+        useAlertStore.setState({ message, open: true, severity: 'error' });
+      })
+      .finally(() => setLoading(false));
+  };
+
   const toggleDialog = () => setOpenDialog(!openDialog);
 
   if (typeof item === 'undefined') return <Loading />;
   if (!item) return <Navigate to="/media" />;
   return (
-    <Box pb={3}>
-      <Box component="img" src={item.url} />
-      <Box display="flex" justifyContent="flex-end" mt={3}>
-        <Button color="error" disabled={loading} onClick={toggleDialog} size="small">
-          このメディアを削除する
-        </Button>
+    <>
+      <Box display="flex" justifyContent="flex-end" mb={3}>
+        <LoadingButton
+          disableElevation
+          loading={loading}
+          onClick={onSave}
+          startIcon={<CloudDownload />}
+          sx={{ borderRadius: 2 }}
+          variant="contained"
+        >
+          ダウンロード
+        </LoadingButton>
       </Box>
-      <Dialog onClose={toggleDialog} onSubmit={onDelete} open={openDialog} />
-    </Box>
+      <Box pb={3}>
+        <Box component="img" src={item.url} />
+        <Box display="flex" justifyContent="flex-end" mt={3}>
+          <Button color="error" disabled={loading} onClick={toggleDialog} size="small">
+            このメディアを削除
+          </Button>
+        </Box>
+        <Dialog onClose={toggleDialog} onSubmit={onDelete} open={openDialog} />
+      </Box>
+    </>
   );
 }
