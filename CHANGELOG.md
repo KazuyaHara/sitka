@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/KazuyaHara/sitka/compare/v0.7.0...v0.8.0) (2022-11-12)
+
+
+### Features
+
+* download original media ([#26](https://github.com/KazuyaHara/sitka/issues/26)) ([889eeb7](https://github.com/KazuyaHara/sitka/commit/889eeb799e32c6130310bd91a7a63e81f7ddb1b4))
+
 # [0.7.0](https://github.com/KazuyaHara/sitka/compare/v0.6.0...v0.7.0) (2022-11-08)
 
 
