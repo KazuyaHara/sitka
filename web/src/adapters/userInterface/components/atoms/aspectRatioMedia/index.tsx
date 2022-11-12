@@ -3,9 +3,19 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import { Box, BoxProps } from '@mui/material';
 
-type Props = Pick<BoxProps, 'borderRadius' | 'sx'> & { ratio?: number; src: string };
+type Props = Pick<BoxProps, 'borderRadius' | 'sx'> & {
+  component: 'img' | 'video';
+  ratio?: number;
+  src: string;
+};
 
-export default function AspectRatioImage({ borderRadius, ratio = 1 / 1, src, sx }: Props) {
+export default function AspectRetioMedia({
+  borderRadius,
+  component,
+  ratio = 1 / 1,
+  src,
+  sx,
+}: Props) {
   const ref = useRef<HTMLDivElement>();
   const [height, setHeight] = useState(1);
 
@@ -19,7 +29,8 @@ export default function AspectRatioImage({ borderRadius, ratio = 1 / 1, src, sx 
   return (
     <Box
       borderRadius={borderRadius}
-      component="img"
+      component={component}
+      controls
       height={height}
       ref={ref}
       src={src}

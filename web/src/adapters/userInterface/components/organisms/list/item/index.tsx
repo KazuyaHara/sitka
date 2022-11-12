@@ -4,7 +4,7 @@ import { CheckCircle } from '@mui/icons-material';
 import { Grid, GridProps } from '@mui/material';
 
 import { ItemWithURL } from '../../../../../../domains/item';
-import AspectRetioImage from '../../../atoms/aspectRatioImage';
+import AspectRetioMedia from '../../../atoms/aspectRatioMedia';
 
 type Props = Pick<GridProps, 'sx'> & {
   items: ItemWithURL[];
@@ -28,7 +28,11 @@ export default function ItemList({ items, onSelectItem, selectedItemIds, sx }: P
           {selectedItemIds.includes(item.id) && (
             <CheckCircle sx={{ color: 'white', position: 'absolute', top: 16, right: 8 }} />
           )}
-          <AspectRetioImage borderRadius={1} src={item.url} />
+          <AspectRetioMedia
+            borderRadius={1}
+            component={item.medium.mimeType.startsWith('video') ? 'video' : 'img'}
+            src={item.url}
+          />
         </Grid>
       ))}
     </Grid>
