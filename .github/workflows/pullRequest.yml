@@ -42,13 +42,6 @@ jobs:
       - name: 🏗 Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: 📝 Update web version
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: './web/package.json'
-        env:
-          version: "${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion || '0.0.0' }}"
-
       - name: 📝 Create dotenv file
         run: echo ${{ secrets.DOTENV_STG }} | base64 --decode > .env.staging
         working-directory: web

@@ -8,9 +8,6 @@ jobs:
   release:
     name: Release new version
     runs-on: ubuntu-latest
-    outputs:
-      currentVersion: ${{ steps.current.outputs.prop }}
-      nextVersion: ${{ steps.release.outputs.version }}
     steps:
       - name: 🏗 Checkout
         uses: actions/checkout@v3
@@ -18,18 +15,10 @@ jobs:
       - name: 🏗 Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: 📝 Get current version
-        id: current
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'package.json'
-          prop_path: 'version'
-
       - name: 📦 Install dependencies
         run: yarn install
 
       - name: 🚀 Release
-        id: release
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,13 +34,6 @@ jobs:
 
       - name: 🏗 Setup Node
         uses: ./.github/actions/setup-node
-
-      - name: 📝 Update web version
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: './web/package.json'
-        env:
-          version: "${{ needs.release.outputs.nextVersion || needs.release.outputs.currentVersion || '0.0.0' }}"
 
       - name: 📝 Create dotenv file
         run: echo ${{ secrets.DOTENV_PRD }} | base64 --decode > .env.production
