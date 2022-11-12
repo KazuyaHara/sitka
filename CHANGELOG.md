@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/KazuyaHara/sitka/compare/v0.8.0...v0.9.0) (2022-11-12)
+
+
+### Features
+
+* upload video ([#29](https://github.com/KazuyaHara/sitka/issues/29)) ([09d3244](https://github.com/KazuyaHara/sitka/commit/09d324463f832cc87a59b7fe72cb6e333b890eb8))
+
 # [0.8.0](https://github.com/KazuyaHara/sitka/compare/v0.7.0...v0.8.0) (2022-11-12)
 
 
