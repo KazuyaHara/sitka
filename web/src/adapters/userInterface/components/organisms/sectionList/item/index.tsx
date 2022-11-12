@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import { ItemWithURL } from '../../../../../../domains/item';
-import AspectRetioImage from '../../../atoms/aspectRatioImage';
+import AspectRetioMedia from '../../../atoms/aspectRatioMedia';
 
 type Props = Pick<BoxProps, 'sx'> & { items: ItemWithURL[] };
 
@@ -37,7 +37,12 @@ export default function ItemSectionList({ items, sx }: Props) {
                 md={2}
                 to={`/media/${item.id}`}
               >
-                <AspectRetioImage borderRadius={1} src={item.url} />
+                <AspectRetioMedia
+                  borderRadius={1}
+                  component="img"
+                  duration={item.medium.metadata?.format?.duration}
+                  src={item.url}
+                />
               </Grid>
             ))}
           </Grid>

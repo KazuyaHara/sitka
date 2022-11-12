@@ -6,7 +6,7 @@ import { Box, Button, BoxProps, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { ItemSubmit } from '../../../../../../interface/useCase/item';
-import AspectRetioImage from '../../../atoms/aspectRatioImage';
+import AspectRetioMedia from '../../../atoms/aspectRatioMedia';
 
 type Form = Omit<ItemSubmit, 'files'>;
 type Props = { loading: boolean; onSubmit: (data: ItemSubmit) => void; sx?: BoxProps['sx'] };
@@ -27,7 +27,7 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
           <Button component="label" disabled={loading} variant="outlined">
             ファイルを選択する
             <input
-              accept="image/*"
+              accept="image/*, video/*"
               hidden
               onChange={(event) =>
                 setFiles(event.target.files ? Array.from(event.target.files) : [])
@@ -42,7 +42,11 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
       <Grid container spacing={1} mt={3}>
         {files.map((file) => (
           <Grid item key={file.name} xs={4} sm={3} md={2}>
-            <AspectRetioImage borderRadius={1} src={URL.createObjectURL(file)} />
+            <AspectRetioMedia
+              borderRadius={1}
+              component={file.type.startsWith('video') ? 'video' : 'img'}
+              src={URL.createObjectURL(file)}
+            />
           </Grid>
         ))}
       </Grid>
@@ -50,6 +54,7 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
       <Box display="flex" justifyContent="flex-end">
         <LoadingButton
           disableElevation
+          disabled={files.length === 0}
           loading={loading}
           size="large"
           sx={{ mt: 3 }}
