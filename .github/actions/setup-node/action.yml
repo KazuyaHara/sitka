@@ -8,3 +8,11 @@ runs:
       with:
         node-version: 'v16.18.0'
         cache: 'yarn'
+
+    - name: 🏗 Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
