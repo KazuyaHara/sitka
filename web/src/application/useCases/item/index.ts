@@ -12,7 +12,7 @@ export default function useItemUseCase(
   const get = async (id: string) =>
     itemRepository.get(id).then(async (item) => {
       if (!item) return null;
-      const url = await mediumRepository.getURL(item.medium.path);
+      const url = await mediumRepository.getURL(item.medium.thumbnail || item.medium.path);
       return { ...item, url };
     });
 
