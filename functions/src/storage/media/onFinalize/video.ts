@@ -5,6 +5,7 @@ import * as path from 'path';
 import { firestore, storage } from 'firebase-admin';
 import { logger } from 'firebase-functions';
 
+import { addHours } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import ffmpeg from 'fluent-ffmpeg';
 import mkdirp from 'mkdirp';
@@ -13,7 +14,7 @@ import sharp from 'sharp';
 const { serverTimestamp } = firestore.FieldValue;
 const getZonedTime = (date?: any) => {
   if (!date) return new Date(0);
-  return zonedTimeToUtc(date, 'Asia/Tokyo');
+  return zonedTimeToUtc(addHours(date, 9), 'Asia/Tokyo');
 };
 
 export default async function processUploadedVideo(name: string) {
@@ -27,6 +28,7 @@ export default async function processUploadedVideo(name: string) {
   const thumbnailFileName = 'thumbnail.png';
   const thumbnail = path.normalize(path.join(path.dirname(name), thumbnailFileName));
   const tmpThumbnail = path.join(os.tmpdir(), thumbnail);
+  let metadata: ffmpeg.FfprobeData | undefined;
   await mkdirp(path.dirname(tmpThumbnail));
   await new Promise((resolve) => {
     ffmpeg(localFile)
@@ -39,6 +41,10 @@ export default async function processUploadedVideo(name: string) {
         filename: path.basename(tmpThumbnail),
         folder: path.dirname(tmpThumbnail),
         timestamps: [1],
+      })
+      .ffprobe((error, data) => {
+        if (error) throw error;
+        metadata = data;
       });
   });
 
@@ -51,7 +57,7 @@ export default async function processUploadedVideo(name: string) {
     .toFormat('jpeg')
     .toFile(localThumbnail)
     .catch((error) => {
-      logger.error('Error occurred while processing thumbnail');
+      logger.error('Error occurred while resizing thumbnail');
       throw new Error(error);
     });
 
@@ -75,8 +81,21 @@ export default async function processUploadedVideo(name: string) {
   return itemRef
     .set(
       {
-        date: getZonedTime(),
-        medium: { thumbnail: `${mediaPath}/${destinationFileName}` },
+        date: getZonedTime(metadata?.format.tags?.creation_time),
+        medium: {
+          metadata:
+            {
+              ...metadata,
+              format: {
+                ...metadata?.format,
+                tags: {
+                  ...metadata?.format.tags,
+                  creation_time: getZonedTime(metadata?.format.tags?.creation_time),
+                },
+              },
+            } || {},
+          thumbnail: `${mediaPath}/${destinationFileName}`,
+        },
         updatedAt: serverTimestamp(),
       },
       { merge: true }

@@ -106,7 +106,7 @@ export default async function processUploadedImage(name: string) {
         date: getZonedTime(exif?.exif?.DateTimeOriginal),
         gearId,
         medium: {
-          exif: {
+          metadata: {
             ...exif,
             exif: {
               ...exif?.exif,

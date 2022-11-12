@@ -39,7 +39,8 @@ export default function ItemSectionList({ items, sx }: Props) {
               >
                 <AspectRetioMedia
                   borderRadius={1}
-                  component={item.medium.mimeType.startsWith('video') ? 'video' : 'img'}
+                  component="img"
+                  duration={item.medium.metadata?.format?.duration}
                   src={item.url}
                 />
               </Grid>
