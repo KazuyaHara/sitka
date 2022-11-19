@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { CloudDownload } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
-import { Box, Button } from '@mui/material';
 import { saveAs } from 'file-saver';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
@@ -13,6 +10,7 @@ import itemRepository from '../../../../../repositories/item';
 import mediumRepository from '../../../../../repositories/medium';
 import { useAlertStore } from '../../../../../stores/alert';
 import Dialog from '../../../molecules/dialog/item/delete';
+import Lightbox from '../../../organisms/lightbox';
 import Loading from '../../loading';
 
 export default function ItemGet() {
@@ -35,6 +33,8 @@ export default function ItemGet() {
     }
   }, [id]);
 
+  const backToList = () => navigate('/media');
+
   const onDelete = async () => {
     if (!id) return navigate('/media');
 
@@ -54,7 +54,7 @@ export default function ItemGet() {
       });
   };
 
-  const onSave = async () => {
+  const onDownload = async () => {
     if (!item) return navigate('/media');
 
     setLoading(true);
@@ -73,27 +73,14 @@ export default function ItemGet() {
   if (!item) return <Navigate to="/media" />;
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" mb={3}>
-        <LoadingButton
-          disableElevation
-          loading={loading}
-          onClick={onSave}
-          startIcon={<CloudDownload />}
-          sx={{ borderRadius: 2 }}
-          variant="contained"
-        >
-          ダウンロード
-        </LoadingButton>
-      </Box>
-      <Box pb={3}>
-        <Box component="img" src={item.url} />
-        <Box display="flex" justifyContent="flex-end" mt={3}>
-          <Button color="error" disabled={loading} onClick={toggleDialog} size="small">
-            このメディアを削除
-          </Button>
-        </Box>
-        <Dialog onClose={toggleDialog} onSubmit={onDelete} open={openDialog} />
-      </Box>
+      <Lightbox
+        item={item}
+        loading={loading}
+        onClose={backToList}
+        onDelete={toggleDialog}
+        onDownload={onDownload}
+      />
+      <Dialog onClose={toggleDialog} onSubmit={onDelete} open={openDialog} />
     </>
   );
 }
