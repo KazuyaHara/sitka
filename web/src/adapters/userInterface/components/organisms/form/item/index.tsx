@@ -45,6 +45,7 @@ export default function ItemForm({ loading, onSubmit, sx }: Props) {
             <AspectRetioMedia
               borderRadius={1}
               component={file.type.startsWith('video') ? 'video' : 'img'}
+              extension={file.name.split('.').pop()?.toLowerCase() as string}
               src={URL.createObjectURL(file)}
             />
           </Grid>
