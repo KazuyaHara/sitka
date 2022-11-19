@@ -9,11 +9,13 @@ import { ItemWithURL } from '../../../../../../domains/item';
 import itemRepository from '../../../../../repositories/item';
 import mediumRepository from '../../../../../repositories/medium';
 import { useAlertStore } from '../../../../../stores/alert';
+import { useItemStore } from '../../../../../stores/item';
 import Dialog from '../../../molecules/dialog/item/delete';
 import Lightbox from '../../../organisms/lightbox';
 import Loading from '../../loading';
 
 export default function ItemGet() {
+  const { items } = useItemStore();
   const { get: getItem, softDelete: softDeleteItem } = useItemUseCase(
     itemRepository(),
     mediumRepository()
@@ -23,17 +25,24 @@ export default function ItemGet() {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<ItemWithURL | null>();
   const [loading, setLoading] = useState(false);
+  const [nextId, setNextId] = useState<string>();
   const [openDialog, setOpenDialog] = useState(false);
+  const [prevId, setPrevId] = useState<string>();
 
   useEffect(() => {
     if (id) {
       getItem(id).then(setItem);
+      const index = items.findIndex((element) => element.id === id);
+      setNextId(items[index - 1]?.id);
+      setPrevId(items[index + 1]?.id);
     } else {
       navigate('/media');
     }
   }, [id]);
 
-  const backToList = () => navigate('/media');
+  const navigateList = () => navigate('/media');
+  const navigateNext = nextId ? () => navigate(`/media/${nextId}`) : undefined;
+  const navigatePrev = prevId ? () => navigate(`/media/${prevId}`) : undefined;
 
   const onDelete = async () => {
     if (!id) return navigate('/media');
@@ -76,9 +85,11 @@ export default function ItemGet() {
       <Lightbox
         item={item}
         loading={loading}
-        onClose={backToList}
+        onClose={navigateList}
         onDelete={toggleDialog}
         onDownload={onDownload}
+        onNavigateNext={navigateNext}
+        onNavigatePrev={navigatePrev}
       />
       <Dialog onClose={toggleDialog} onSubmit={onDelete} open={openDialog} />
     </>

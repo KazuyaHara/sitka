@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { ArrowBack, CloudDownload, DeleteForever } from '@mui/icons-material';
+import {
+  ArrowBack,
+  ChevronLeft,
+  ChevronRight,
+  CloudDownload,
+  DeleteForever,
+} from '@mui/icons-material';
 import { AppBar, Box, Button, CircularProgress, Dialog, IconButton, Toolbar } from '@mui/material';
 
 import { ItemWithURL } from '../../../../../domains/item';
@@ -11,9 +17,19 @@ type Props = {
   onClose: () => void;
   onDelete: () => void;
   onDownload: () => void;
+  onNavigateNext?: () => void;
+  onNavigatePrev?: () => void;
 };
 
-export default function Lightbox({ item, loading, onClose, onDelete, onDownload }: Props) {
+export default function Lightbox({
+  item,
+  loading,
+  onClose,
+  onDelete,
+  onDownload,
+  onNavigateNext,
+  onNavigatePrev,
+}: Props) {
   return (
     <Dialog
       fullWidth
@@ -45,8 +61,29 @@ export default function Lightbox({ item, loading, onClose, onDelete, onDownload 
             </Box>
           </Toolbar>
         </AppBar>
-        <Box alignItems="center" display="flex" height="100%" justifyContent="center">
+        <Box
+          alignItems="center"
+          display="flex"
+          height="100%"
+          justifyContent="space-between"
+          px={3}
+          width="100%"
+        >
+          <IconButton
+            disabled={loading || !onNavigateNext}
+            onClick={onNavigateNext}
+            sx={{ color: 'white' }}
+          >
+            <ChevronLeft fontSize="large" />
+          </IconButton>
           <Box component="img" maxHeight="100%" src={item.url} />
+          <IconButton
+            disabled={loading || !onNavigatePrev}
+            onClick={onNavigatePrev}
+            sx={{ color: 'white' }}
+          >
+            <ChevronRight fontSize="large" />
+          </IconButton>
         </Box>
       </Box>
     </Dialog>
