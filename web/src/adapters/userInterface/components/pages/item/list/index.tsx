@@ -5,23 +5,23 @@ import { Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import useItemUseCase from '../../../../../../application/useCases/item';
-import { ItemWithURL } from '../../../../../../domains/item';
 import itemRepository from '../../../../../repositories/item';
 import mediumRepository from '../../../../../repositories/medium';
+import { useItemStore } from '../../../../../stores/item';
 import ItemSectionList from '../../../organisms/sectionList/item';
-import Loading from '../../loading';
 
 export default function ItemList() {
+  const { items } = useItemStore();
   const { subscribe } = useItemUseCase(itemRepository(), mediumRepository());
-  const [items, setItems] = useState<ItemWithURL[]>();
   const [limit] = useState(100);
 
   useEffect(() => {
-    const unsubscribe = subscribe(limit, setItems);
+    const unsubscribe = subscribe(limit, (nextItems) =>
+      useItemStore.setState({ items: nextItems })
+    );
     return () => unsubscribe();
   }, []);
 
-  if (typeof items === 'undefined') return <Loading />;
   return (
     <>
       <Box display="flex" justifyContent="flex-end" mb={3}>
