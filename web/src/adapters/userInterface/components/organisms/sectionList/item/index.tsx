@@ -41,6 +41,7 @@ export default function ItemSectionList({ items, sx }: Props) {
                   borderRadius={1}
                   component="img"
                   duration={item.medium.metadata?.format?.duration}
+                  extension={item.medium.extension}
                   src={item.url}
                 />
               </Grid>

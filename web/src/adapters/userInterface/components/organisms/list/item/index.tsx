@@ -28,7 +28,12 @@ export default function ItemList({ items, onSelectItem, selectedItemIds, sx }: P
           {selectedItemIds.includes(item.id) && (
             <CheckCircle sx={{ color: 'white', position: 'absolute', top: 16, right: 8 }} />
           )}
-          <AspectRetioMedia borderRadius={1} component="img" src={item.url} />
+          <AspectRetioMedia
+            borderRadius={1}
+            component="img"
+            extension={item.medium.extension}
+            src={item.url}
+          />
         </Grid>
       ))}
     </Grid>
