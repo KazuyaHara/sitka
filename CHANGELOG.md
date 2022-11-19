@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/KazuyaHara/sitka/compare/v0.9.0...v0.10.0) (2022-11-19)
+
+
+### Features
+
+* **web:** show extension ([#32](https://github.com/KazuyaHara/sitka/issues/32)) ([04984b3](https://github.com/KazuyaHara/sitka/commit/04984b31fd322d63e74fc0d5154d7ff6413990f8))
+
 # [0.9.0](https://github.com/KazuyaHara/sitka/compare/v0.8.0...v0.9.0) (2022-11-12)
 
 
