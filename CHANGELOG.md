@@ -1,3 +1,10 @@
+# [0.11.0](https://github.com/KazuyaHara/sitka/compare/v0.10.0...v0.11.0) (2022-11-19)
+
+
+### Features
+
+* show media on light-box ([#33](https://github.com/KazuyaHara/sitka/issues/33)) ([20f3be4](https://github.com/KazuyaHara/sitka/commit/20f3be4e276e1035b77b5de9c616d67fca827b14))
+
 # [0.10.0](https://github.com/KazuyaHara/sitka/compare/v0.9.0...v0.10.0) (2022-11-19)
 
 
